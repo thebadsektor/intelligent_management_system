@@ -1,0 +1,5 @@
+py -3 -m venv .venv
+source .venv/Scripts/activate
+pip freeze > requirements.txt
+pip install pipenv
+pipenv install -r requirements.txt
