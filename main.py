@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, uic
+import time
 
 # Import resources
 import resources
@@ -14,6 +15,30 @@ from utils import *
 # Import monitor
 import monitor
 
+class LiveUpdateThread(QThread):
+    data_changed = pyqtSignal(str)
+    
+    def __init__(self):
+        super().__init__()
+        self.running = True
+        
+    def run(self):
+        while self.running:
+            # Get CPU usage live data and format it
+            cpu_usage = monitor.get_cpu_usage()
+            cpu_usage_formatted = "{:.2f}".format(cpu_usage) + "%"
+            print(f'CPU Usage: {cpu_usage_formatted}')
+            
+            # Emit signal with updated data
+            self.data_changed.emit(cpu_usage_formatted)
+            
+            # Wait for 1 second before updating again
+            time.sleep(1)
+
+    def stop(self):
+        self.running = False
+
+       
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -45,15 +70,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btnClose.clicked.connect(self.close)
         self.btnLogin.clicked.connect(self.login)
 
-    def update_cpu_usage(self):
-        # Get CPU usage
-        cpu_usage = monitor.get_cpu_usage()
-        cpu_usage_formatted = "{:.2f}".format(cpu_usage) + "%"
-        print(f'CPU Usage: {cpu_usage_formatted}')
-
+    def update_live_data(self, data):
         # Set CPU usage to widget
-        self.cpuUsageValueText.setText(cpu_usage_formatted)
-        self.cpuUsageValue.setFixedWidth((self.cpuUsageBar.width()/100) * cpu_usage)
+        cpu_usage = float(data[:-1])
+        self.cpuUsageValueText.setText(data)
+        self.cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
+        
+    def closeEvent(self, event):
+        self.live_update_thread.stop()
+        event.accept()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -91,11 +116,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Check the username and password
         if username == 'admin' and password == 'admin':
-            # Set up QTimer to update CPU usage every second
-            self.update_cpu_usage()
-            self.timer = QTimer()
-            self.timer.timeout.connect(self.update_cpu_usage)
-            self.timer.start(1000) # 1000 ms = 1 second
+            # Create thread for updating live data
+            self.live_update_thread = LiveUpdateThread()
+            self.live_update_thread.data_changed.connect(self.update_live_data)
+            self.live_update_thread.start()
 
             # Set window size for Main
             self.resize(1280,720)
