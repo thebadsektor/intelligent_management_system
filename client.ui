@@ -361,7 +361,7 @@ margin-bottom: 20px;</string>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="btnLogin">
+            <widget class="QPushButton" name="btnConnect">
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
@@ -400,22 +400,11 @@ margin-bottom: 20px;</string>
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item>
-               <widget class="QLabel" name="txtStatus">
-                <property name="styleSheet">
-                 <string notr="true">font-size: 14px;
-max-width: 155px;</string>
-                </property>
-                <property name="text">
-                 <string>No Connection</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
              </layout>
             </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="txtReceivedData"/>
            </item>
            <item>
             <spacer name="verticalSpacer">
