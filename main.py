@@ -16,7 +16,10 @@ from utils import *
 import monitor
 
 class LiveUpdateThread(QThread):
-    data_changed = pyqtSignal(str)
+    cpu_data_changed = pyqtSignal(str)
+    memory_data_changed = pyqtSignal(str)
+    disk_data_changed = pyqtSignal(str)
+
     
     def __init__(self):
         super().__init__()
@@ -28,9 +31,21 @@ class LiveUpdateThread(QThread):
             cpu_usage = monitor.get_cpu_usage()
             cpu_usage_formatted = "{:.2f}".format(cpu_usage) + "%"
             print(f'CPU Usage: {cpu_usage_formatted}')
+
+            # Get memory usage live data
+            memory_usage = monitor.get_memory_usage()
+            memory_usage_formatted = f"{memory_usage['available']} MB / {memory_usage['total']} MB" 
+            print(f'Memory Usage: {memory_usage_formatted}')
+
+            # Get disk usage
+            disk_usage = monitor.get_disk_usage()
+            disk_usage_formatted = f"{disk_usage['available']} MB / {disk_usage['total']} MB" 
+            print(f'Disk Usage: {disk_usage_formatted}')
             
             # Emit signal with updated data
-            self.data_changed.emit(cpu_usage_formatted)
+            self.cpu_data_changed.emit(cpu_usage_formatted)
+            self.memory_data_changed.emit(memory_usage_formatted)
+            self.disk_data_changed.emit(disk_usage_formatted)
             
             # Wait for 1 second before updating again
             time.sleep(1)
@@ -47,7 +62,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         # Set initial window size for Login
-        self.resize(460,600)
+        self.resize(440,600)
 
         # Initialize mouse_pos attribute
         self.mouse_pos = None
@@ -69,12 +84,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btnMaximize.clicked.connect(self.toggleMaximized)
         self.btnClose.clicked.connect(self.close)
         self.btnLogin.clicked.connect(self.login)
+        self.btnLogout.clicked.connect(self.logout)
+        self.btnSeeAll.clicked.connect(self.see_all)
 
-    def update_live_data(self, data):
+    def update_cpu_usage(self, data):
         # Set CPU usage to widget
         cpu_usage = float(data[:-1])
         self.cpuUsageValueText.setText(data)
         self.cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
+
+    def update_memory_usage(self, data):
+        # Set memory usage to widget
+        self.txtMemoryUsage.setText(data)
+
+    def update_disk_usage(self, data):
+        # Set memory usage to widget
+        self.txtDiskUsage.setText(data)
         
     def closeEvent(self, event):
         self.live_update_thread.stop()
@@ -105,10 +130,15 @@ class MainWindow(QtWidgets.QMainWindow):
     def toggleMaximized(self):
         if self.isMaximized():
             self.showNormal()
-            self.btnMaximize.setStyleSheet("QPushButton {image: url(:/images/resources/icons/square_alt.svg); min-width: 16px; min-height: 16px;max-width: 16px; max-height: 16px;padding-top: 10px;padding-bottom: 10px;padding-left: 20px;padding-right: 20px;} QPushButton:hover {background-color: #3d4145;}")
+            self.btnMaximize.setStyleSheet("QPushButton {image: url(:/images/resources/icons_alt/square.svg); min-width: 16px; min-height: 16px; max-width: 16px; max-height: 16px;padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;} QPushButton:hover {background-color: #3d4145;}")
         else:
             self.showMaximized()
-            self.btnMaximize.setStyleSheet("QPushButton {image: url(:/images/resources/icons/copy.svg); min-width: 16px; min-height: 16px;max-width: 16px; max-height: 16px;padding-top: 10px;padding-bottom: 10px;padding-left: 20px;padding-right: 20px;} QPushButton:hover {background-color: #3d4145;}")
+            self.btnMaximize.setStyleSheet("QPushButton {image: url(:/images/resources/icons_alt/copy.svg); min-width: 16px; min-height: 16px; max-width: 16px; max-height: 16px; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;} QPushButton:hover {background-color: #3d4145;}")
+
+    def see_all(self):
+        # Show pcDetails
+        self.pcDetails.setVisible(True)
+
 
     def login(self):
         username = self.txtUsername.text()
@@ -118,8 +148,13 @@ class MainWindow(QtWidgets.QMainWindow):
         if username == 'admin' and password == 'admin':
             # Create thread for updating live data
             self.live_update_thread = LiveUpdateThread()
-            self.live_update_thread.data_changed.connect(self.update_live_data)
+            self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
+            self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
+            self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
             self.live_update_thread.start()
+
+            # Hide pcDetails
+            self.pcDetails.setVisible(False)
 
             # Set window size for Main
             self.resize(1280,720)
@@ -129,6 +164,13 @@ class MainWindow(QtWidgets.QMainWindow):
         else:
             QtWidgets.QMessageBox.warning(self, 'Error', 'Invalid username or password.')
 
+    def logout(self):
+        # Set window size for Main
+        self.resize(440,600)
+        # center window
+        center(self)
+        self.stackedWidget.setCurrentIndex(0)  # Switch to the main page
+        self.live_update_thread.stop()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

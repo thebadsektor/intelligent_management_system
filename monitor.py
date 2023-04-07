@@ -21,17 +21,17 @@ def get_cpu_usage():
 def get_memory_usage():
     memory = psutil.virtual_memory()
     return {
-        'total': memory.total,
-        'used': memory.used,
-        'available': memory.available
+        'total': memory.total // (1024*1024),
+        'used': memory.used // (1024*1024),
+        'available': memory.available // (1024*1024)
     }
 
 def get_disk_usage():
     disk = psutil.disk_usage('/')
     return {
-        'total': disk.total,
-        'used': disk.used,
-        'available': disk.free
+        'total': disk.total // (1024*1024),
+        'used': disk.used // (1024*1024),
+        'available': disk.free // (1024*1024)
     }
 
 def get_network_info():
