@@ -5,6 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, uic
 import time
+from server import start_server
 
 # Import resources
 import resources
@@ -15,6 +16,15 @@ from utils import *
 # Import monitor
 import monitor
 
+class ServerThread(QThread):
+    def __init__(self, host, port):
+        super().__init__()
+        self.host = host
+        self.port = port
+
+    def run(self):
+        start_server(self.host, self.port)
+        
 class LiveUpdateThread(QThread):
     data_changed = pyqtSignal(str)
     
@@ -43,7 +53,10 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('main.ui', self)
+        self.server_thread = ServerThread('0.0.0.0', 5000)
+        self.server_thread.start()
 
+        
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         # Set initial window size for Login
