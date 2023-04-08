@@ -1,3 +1,4 @@
+import json
 import socket
 import threading
 
@@ -5,8 +6,12 @@ def handle_client(client_socket, addr):
     print(f"Client {addr} connected")
     
     with client_socket:
+        # Receive network_info from the client
+        network_info = json.loads(client_socket.recv(1024).decode('utf-8'))
+        print(f"Received network_info: {network_info}")
+
+        # Keep receiving data from the client
         while True:
-            network_info = json.loads(client_socket.recv(1024).decode('utf-8'))
             cpu_usage = client_socket.recv(1024).decode('utf-8')
             if not cpu_usage:
                 break
