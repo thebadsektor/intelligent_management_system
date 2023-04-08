@@ -2,9 +2,7 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import uic
-import json
-
-from client import connect_to_server
+from client import connect_to_server, get_cpu_usage, get_network_info
 
 class ConnectionThread(QThread):
     data_received = pyqtSignal(str)
@@ -15,11 +13,10 @@ class ConnectionThread(QThread):
         self.port = port
 
     def run(self):
-        hostname, ip_address = connect_to_server(self.host, self.port)
-        while True:
-            received_data = f"Client {hostname} - {ip_address}: {get_cpu_usage()}%"
-            self.data_received.emit(received_data)
-            time.sleep(1)
+        connect_to_server(self.host, self.port, callback=self.update_received_data)
+
+    def update_received_data(self, data):
+        self.data_received.emit(data)
 
 class ClientWindow(QMainWindow):
     def __init__(self):

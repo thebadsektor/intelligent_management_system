@@ -7,7 +7,7 @@ from monitor import get_network_info
 def get_cpu_usage():
     return psutil.cpu_percent(interval=1)
 
-def connect_to_server(host, port):
+def connect_to_server(host, port, callback=None):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((host, port))
 
@@ -19,11 +19,10 @@ def connect_to_server(host, port):
 
         while True:
             cpu_usage = get_cpu_usage()
-            
             s.sendall(str(cpu_usage).encode('utf-8'))
+            if callback:
+                callback(f"Client {network_info['hostname']} - {network_info['ip_address']}: {cpu_usage}%")
             time.sleep(1)  # Send CPU usage every 1 second
-            
-        return network_info["hostname"], network_info["ip_address"]
 
 if __name__ == '__main__':
     host = 'YOUR_SERVER_IP_ADDRESS'
