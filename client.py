@@ -19,7 +19,7 @@ def connect_to_server(host, port, callback=None):
         while True:
             cpu_usage = get_cpu_usage()
             if callback is not None:
-                callback(f"Client {network_info['hostname']} - {network_info['ip']} : {cpu_usage}%")
+                callback(f"Client {network_info['hostname']} - {network_info['ip_address']} : {cpu_usage}%")
             s.sendall(str(cpu_usage).encode('utf-8'))
             time.sleep(1)  # Send CPU usage every 1 second
 
