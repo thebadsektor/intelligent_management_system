@@ -1,3 +1,4 @@
+import json
 import socket
 import psutil
 import time
@@ -12,7 +13,10 @@ def connect_to_server(host, port):
 
         network_info = get_network_info()
         s.sendall(json.dumps(network_info).encode('utf-8'))
-        
+
+        # Wait for the server to acknowledge the receipt of network_info
+        s.recv(1024)
+
         while True:
             cpu_usage = get_cpu_usage()
             
