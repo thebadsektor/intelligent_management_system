@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+click = "==8.1.3"
+colorama = "==0.4.6"
+psutil = "==5.9.4"
+pyqt5 = "==5.15.9"
+pyqt5-plugins = "==5.15.9.2.3"
+pyqt5-qt5 = "==5.15.2"
+pyqt5-sip = "==12.11.1"
+pyqt5-tools = "==5.15.9.3.3"
+python-dotenv = "==1.0.0"
+qt5-applications = "==5.15.2.2.3"
+qt5-tools = "==5.15.2.1.3"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
