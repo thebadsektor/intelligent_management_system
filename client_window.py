@@ -16,7 +16,7 @@ class ClientWindow(QMainWindow):
         host = self.txtServerIP.text()
         port = int(self.txtServerPort.text())
         received_data = connect_to_server(host, port)
-
+        print(received_data)
         self.txtReceivedData.setPlainText(received_data)
 
 if __name__ == "__main__":

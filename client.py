@@ -1,19 +1,18 @@
 import socket
-from monitor import get_network_info
+import psutil
+import time
+
+def get_cpu_usage():
+    return psutil.cpu_percent(interval=1)
 
 def connect_to_server(host, port):
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((host, port))
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((host, port))
 
-    network_info = get_network_info()
-    data = f"{network_info['hostname']} {network_info['ip_address']}"
-
-    client_socket.send(data.encode('utf-8'))
-
-    response = client_socket.recv(1024).decode('utf-8')
-    print(f"Server response: {response}")
-
-    client_socket.close()
+        while True:
+            cpu_usage = get_cpu_usage()
+            s.sendall(str(cpu_usage).encode('utf-8'))
+            time.sleep(1)  # Send CPU usage every 1 second
 
 if __name__ == '__main__':
     host = 'YOUR_SERVER_IP_ADDRESS'
