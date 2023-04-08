@@ -1,13 +1,15 @@
 import socket
 import threading
 
-def handle_client(client_socket):
+def handle_client(client_socket, addr):
+    print(f"Client {addr} connected")
+    
     with client_socket:
         while True:
             cpu_usage = client_socket.recv(1024).decode('utf-8')
             if not cpu_usage:
                 break
-            print(f'Client CPU Usage: {cpu_usage}%')
+            print(f'Client {addr} CPU Usage: {cpu_usage}%')
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -19,8 +21,7 @@ def start_server(host, port):
 
         while True:
             client_socket, addr = s.accept()
-            print(f"Client {addr} connected")
-            thread = threading.Thread(target=handle_client, args=(client_socket,))
+            thread = threading.Thread(target=handle_client, args=(client_socket, addr))
             thread.start()
 
 if __name__ == '__main__':
