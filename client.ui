@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>908</width>
-    <height>698</height>
+    <width>912</width>
+    <height>707</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -404,7 +404,7 @@ margin-bottom: 20px;</string>
             </widget>
            </item>
            <item>
-            <widget class="QTextEdit" name="txtReceivedData"/>
+            <widget class="QPlainTextEdit" name="txtReceivedData"/>
            </item>
            <item>
             <spacer name="verticalSpacer">
