@@ -15,8 +15,11 @@ class ConnectionThread(QThread):
         self.port = port
 
     def run(self):
-        received_data = connect_to_server(self.host, self.port)
-        self.data_received.emit(received_data)
+        hostname, ip_address = connect_to_server(self.host, self.port)
+        while True:
+            received_data = f"Client {hostname} - {ip_address}: {get_cpu_usage()}%"
+            self.data_received.emit(received_data)
+            time.sleep(1)
 
 class ClientWindow(QMainWindow):
     def __init__(self):

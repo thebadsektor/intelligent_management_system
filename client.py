@@ -22,6 +22,8 @@ def connect_to_server(host, port):
             
             s.sendall(str(cpu_usage).encode('utf-8'))
             time.sleep(1)  # Send CPU usage every 1 second
+            
+        return network_info["hostname"], network_info["ip_address"]
 
 if __name__ == '__main__':
     host = 'YOUR_SERVER_IP_ADDRESS'
