@@ -1,8 +1,11 @@
 import sys
+import time
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import uic
-from client import connect_to_server, get_cpu_usage, get_network_info
+import json
+
+from client import connect_to_server, get_cpu_usage
 
 class ConnectionThread(QThread):
     data_received = pyqtSignal(str)
@@ -14,7 +17,7 @@ class ConnectionThread(QThread):
 
     def run(self):
         connect_to_server(self.host, self.port, callback=self.update_received_data)
-
+        
     def update_received_data(self, data):
         self.data_received.emit(data)
 
@@ -30,10 +33,10 @@ class ClientWindow(QMainWindow):
         host = self.txtServerIP.text()
         port = int(self.txtServerPort.text())
         self.connection_thread = ConnectionThread(host, port)
-        self.connection_thread.data_received.connect(self.update_received_data)
+        self.connection_thread.data_received.connect(self.display_received_data)
         self.connection_thread.start()
 
-    def update_received_data(self, data):
+    def display_received_data(self, data):
         print(data)
         self.txtReceivedData.setPlainText(data)
 

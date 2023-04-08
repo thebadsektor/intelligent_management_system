@@ -2,7 +2,7 @@ import json
 import socket
 import psutil
 import time
-from monitor import get_network_info
+from monitor import get_network_info, get_os_info
 
 def get_cpu_usage():
     return psutil.cpu_percent(interval=1)
@@ -12,16 +12,15 @@ def connect_to_server(host, port, callback=None):
         s.connect((host, port))
 
         network_info = get_network_info()
-        s.sendall(json.dumps(network_info).encode('utf-8'))
-
-        # Wait for the server to acknowledge the receipt of network_info
-        s.recv(1024)
+        os_info = get_os_info()
+        system_info = {"network_info": network_info, "os_info": os_info}
+        s.sendall(json.dumps(system_info).encode('utf-8'))
 
         while True:
             cpu_usage = get_cpu_usage()
+            if callback is not None:
+                callback(f"Client {network_info['hostname']} - {network_info['ip']} : {cpu_usage}%")
             s.sendall(str(cpu_usage).encode('utf-8'))
-            if callback:
-                callback(f"Client {network_info['hostname']} - {network_info['ip_address']}: {cpu_usage}%")
             time.sleep(1)  # Send CPU usage every 1 second
 
 if __name__ == '__main__':
