@@ -6,10 +6,11 @@ def handle_client(client_socket, addr):
     
     with client_socket:
         while True:
+            network_info = json.loads(client_socket.recv(1024).decode('utf-8'))
             cpu_usage = client_socket.recv(1024).decode('utf-8')
             if not cpu_usage:
                 break
-            print(f'Client {addr} CPU Usage: {cpu_usage}%')
+            print(f'Client {network_info['hostname']} CPU Usage: {cpu_usage}%')
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
