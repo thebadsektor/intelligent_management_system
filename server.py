@@ -10,12 +10,16 @@ def handle_client(client_socket, addr):
         network_info = json.loads(client_socket.recv(1024).decode('utf-8'))
         print(f"Received network_info: {network_info}")
 
+        # Send acknowledgment to the client
+        client_socket.send(b"ack")
+
         # Keep receiving data from the client
         while True:
             cpu_usage = client_socket.recv(1024).decode('utf-8')
             if not cpu_usage:
                 break
             print(f'Client {network_info["hostname"]} CPU Usage: {cpu_usage}%')
+
 
 def start_server(host, port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
