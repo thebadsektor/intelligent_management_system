@@ -1,8 +1,16 @@
 import json
 import socket
 import threading
+from PyQt5.QtCore import QObject, pyqtSignal
 
-def handle_client(client_socket, addr):
+
+class Signal(QObject):
+    hostname_changed = pyqtSignal(str)
+    cpu_data_changed = pyqtSignal(str)
+
+# signal = Signal()
+
+def handle_client(client_socket, addr, signal):
     print(f"Client {addr} connected")
     
     with client_socket:
@@ -19,8 +27,11 @@ def handle_client(client_socket, addr):
             if not cpu_usage:
                 break
             print(f'Client {network_info["hostname"]} CPU Usage: {cpu_usage}%')
+            signal.hostname_changed.emit(network_info['hostname'])
+            signal.cpu_data_changed.emit(cpu_usage)
 
-def start_server(host, port):
+
+def start_server(host, port, signal):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind((host, port))
@@ -30,7 +41,7 @@ def start_server(host, port):
 
         while True:
             client_socket, addr = s.accept()
-            thread = threading.Thread(target=handle_client, args=(client_socket, addr))
+            thread = threading.Thread(target=handle_client, args=(client_socket, addr, signal))
             thread.start()
 
 if __name__ == '__main__':

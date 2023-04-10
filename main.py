@@ -5,7 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, uic
 import time
-from server import start_server
+from server import start_server, Signal
 
 # Import resources
 import resources
@@ -17,13 +17,15 @@ from utils import *
 import monitor
 
 class ServerThread(QThread):
-    def __init__(self, host, port):
+    def __init__(self, host, port, signal):
         super().__init__()
         self.host = host
         self.port = port
+        self.signal = signal
 
     def run(self):
-        start_server(self.host, self.port)
+        start_server(self.host, self.port, self.signal)
+
         
 class LiveUpdateThread(QThread):
     cpu_data_changed = pyqtSignal(str)
@@ -67,8 +69,6 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('main.ui', self)
-        self.server_thread = ServerThread('0.0.0.0', 5000)
-        self.server_thread.start()
 
         self.setWindowFlags(Qt.FramelessWindowHint)
 
@@ -101,12 +101,17 @@ class MainWindow(QtWidgets.QMainWindow):
         # ------------ TEST ------------------
         create_new_card(self)
 
-        # Create thread for updating live data
+        # Threads
         self.live_update_thread = LiveUpdateThread()
         self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
         self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
         self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
         self.live_update_thread.start()
+
+        self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
+        self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
+        self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
+        self.server_thread.start()
 
         # Hide pcDetails
         self.pcDetails.setVisible(False)
@@ -131,6 +136,26 @@ class MainWindow(QtWidgets.QMainWindow):
     def update_disk_usage(self, data):
         # Set memory usage to widget
         self.txtDiskUsage.setText(data)
+
+    # Update clients
+    def update_client_hostname(self, data):
+        print(f'Updated client hostname: ', data)
+        pc = self.findChild(QPushButton, f'pc{2}')
+
+        if pc is not None:
+            pc.setText(f'  {data}')
+
+    def update_client_cpu_usage(self, data):
+        cpu_usage = float(data)
+        print(f'Updated client cpu usage: ', cpu_usage)
+        cpuUsageValueText = self.findChild(QLabel, f'cpuUsageValueText{2}')
+        cpuUsageValue = self.findChild(QLabel, f'cpuUsageValue{2}')
+        cpuUsageBar = self.findChild(QLabel, f'cpuUsageBar{2}')
+
+        if cpuUsageValueText is not None:
+            cpuUsageValueText.setText("{:.2f}".format(cpu_usage) + '%')
+            cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
+
         
     def closeEvent(self, event):
         self.live_update_thread.stop()

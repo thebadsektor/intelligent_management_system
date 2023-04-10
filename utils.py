@@ -39,6 +39,7 @@ def create_new_card(self):
 
     # cardHeader -> PC
     pc = QPushButton('  PC')
+    pc.setObjectName(f'pc{card_num}')
     pc.setStyleSheet('font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: white; background-color: transparent; text-align: left;')
     pc.setIcon(QIcon(':/images/resources/icons_alt/monitor.svg'))
     pc.setIconSize(QSize(20, 20))   
