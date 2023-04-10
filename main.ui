@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>914</width>
-    <height>551</height>
+    <width>1157</width>
+    <height>678</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -647,7 +647,12 @@ width: 35px;</string>
         <item>
          <widget class="QFrame" name="cards">
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QFrame#cards {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -666,7 +671,7 @@ width: 35px;</string>
             <number>0</number>
            </property>
            <property name="spacing">
-            <number>0</number>
+            <number>20</number>
            </property>
            <item row="0" column="0">
             <widget class="QFrame" name="card">
@@ -703,7 +708,7 @@ width: 35px;</string>
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item alignment="Qt::AlignVCenter">
+              <item alignment="Qt::AlignTop">
                <widget class="QFrame" name="cardHeader">
                 <property name="styleSheet">
                  <string notr="true">QFrame#cardHeader {
@@ -741,19 +746,6 @@ text-align: left;</string>
                      <normaloff>:/images/resources/icons_alt/monitor.svg</normaloff>:/images/resources/icons_alt/monitor.svg</iconset>
                    </property>
                   </widget>
-                 </item>
-                 <item>
-                  <spacer name="horizontalSpacer_4">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                  <item>
                   <widget class="QLabel" name="status">
@@ -806,9 +798,9 @@ text-align: left;</string>
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QFrame" name="frame_2">
+                  <widget class="QFrame" name="cpuUsage">
                    <property name="styleSheet">
-                    <string notr="true">QFrame#frame_2 {
+                    <string notr="true">QFrame#cpuUsage {
 	margin-bottom: 10px;
 }</string>
                    </property>
@@ -837,10 +829,12 @@ text-align: left;</string>
                     <item>
                      <widget class="QLabel" name="txtCpuUsage">
                       <property name="styleSheet">
-                       <string notr="true">font-family: &quot;Segoe UI&quot;, sans-serif;
-font-size: 12px;
-font-weight: 500;
-color: white;</string>
+                       <string notr="true">QLabel#txtCpuUsage {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	color: white;
+}</string>
                       </property>
                       <property name="text">
                        <string>CPU Usage</string>
@@ -850,7 +844,11 @@ color: white;</string>
                     <item alignment="Qt::AlignRight">
                      <widget class="QLabel" name="cpuUsageValueText">
                       <property name="styleSheet">
-                       <string notr="true">color: #6a6b70;</string>
+                       <string notr="true">QLabel#cpuUsageValueText {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	color: #6a6b70;
+}
+</string>
                       </property>
                       <property name="text">
                        <string>0%</string>
@@ -860,7 +858,7 @@ color: white;</string>
                    </layout>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignVCenter">
+                 <item>
                   <widget class="QFrame" name="cpuUsageBar">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -899,22 +897,23 @@ color: white;</string>
                     <property name="rightMargin">
                      <number>0</number>
                     </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
                     <item>
-                     <widget class="QFrame" name="cpuUsageValue">
+                     <widget class="QLabel" name="cpuUsageValue">
                       <property name="styleSheet">
                        <string notr="true">QFrame#cpuUsageValue {
 	min-height: 10px;
 	border-radius: 4px;
 	background-color: #5468ff;
+	min-width: 20px;
 }
 
 </string>
                       </property>
-                      <property name="frameShape">
-                       <enum>QFrame::StyledPanel</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
+                      <property name="text">
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -940,34 +939,37 @@ color: white;</string>
                     <cursorShape>PointingHandCursor</cursorShape>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">font-family: &quot;Segoe UI&quot;, sans-serif;
-font-size: 12px;
-font-weight: 500;
-color: #5568fe;
-background-color: transparent;
-padding: 0px;
-margin-top: 10px;</string>
+                    <string notr="true">QPushButton#btnSeeAll {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	color: #5568fe;
+	background-color: transparent;
+	padding: 0px;	
+	margin-top: 10px;
+}
+</string>
                    </property>
                    <property name="text">
                     <string>See all</string>
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <spacer name="verticalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
               </item>
              </layout>
             </widget>

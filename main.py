@@ -29,7 +29,6 @@ class LiveUpdateThread(QThread):
     cpu_data_changed = pyqtSignal(str)
     memory_data_changed = pyqtSignal(str)
     disk_data_changed = pyqtSignal(str)
-
     
     def __init__(self):
         super().__init__()
@@ -71,7 +70,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.server_thread = ServerThread('0.0.0.0', 5000)
         self.server_thread.start()
 
-        
         self.setWindowFlags(Qt.FramelessWindowHint)
 
         # Set initial window size for Login
@@ -99,6 +97,26 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btnLogin.clicked.connect(self.login)
         self.btnLogout.clicked.connect(self.logout)
         self.btnSeeAll.clicked.connect(self.see_all)
+
+        # ------------ TEST ------------------
+        create_new_card(self)
+
+        # Create thread for updating live data
+        self.live_update_thread = LiveUpdateThread()
+        self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
+        self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
+        self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
+        self.live_update_thread.start()
+
+        # Hide pcDetails
+        self.pcDetails.setVisible(False)
+
+        # Set window size for Main
+        self.resize(1280,720)
+        # center window
+        center(self)
+        self.stackedWidget.setCurrentIndex(1)  # Switch to the main page
+        # ------------ TEST ------------------
 
     def update_cpu_usage(self, data):
         # Set CPU usage to widget
