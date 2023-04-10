@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1157</width>
-    <height>678</height>
+    <width>694</width>
+    <height>527</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,20 +24,36 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <item alignment="Qt::AlignVCenter">
-     <widget class="QWidget" name="headerWidget" native="true">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item alignment="Qt::AlignTop">
+     <widget class="QWidget" name="header" native="true">
       <property name="styleSheet">
-       <string notr="true">background-color: #2A2C33;
-height: 34px;
-max-height: 34px;
-border-bottom: 1px solid black;</string>
+       <string notr="true">QWidget#header {
+	background-color: #26272D;
+	height: 45px;
+	min-height: 45px;
+	max-height: 45px;
+	border-bottom: 1px solid black;
+}
+</string>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
         <number>0</number>
        </property>
        <property name="leftMargin">
-        <number>20</number>
+        <number>0</number>
        </property>
        <property name="topMargin">
         <number>0</number>
@@ -49,9 +65,13 @@ border-bottom: 1px solid black;</string>
         <number>0</number>
        </property>
        <item alignment="Qt::AlignVCenter">
-        <widget class="QFrame" name="frame">
+        <widget class="QFrame" name="headerContent">
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">QFrame#headerContent {
+	padding: 0px;
+	margin: 0px;
+	margin-left: 12px;
+}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -60,6 +80,9 @@ border-bottom: 1px solid black;</string>
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -78,11 +101,33 @@ border-bottom: 1px solid black;</string>
              <string notr="true">image: url(:/images/resources/icons/monitor_alt.svg);
 min-width: 20px;
 min-height: 20px;
-border-bottom: 0px;
 background-color: transparent;</string>
             </property>
             <property name="text">
              <string/>
+            </property>
+           </widget>
+          </item>
+          <item alignment="Qt::AlignVCenter">
+           <widget class="QLabel" name="title">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel#title {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	color:  white;
+	font-size: 12px;
+	font-weight: 400;
+	padding-left: 8px;
+	padding-top: 0px;
+}</string>
+            </property>
+            <property name="text">
+             <string>Intelligent Management System</string>
             </property>
            </widget>
           </item>
@@ -99,11 +144,15 @@ background-color: transparent;</string>
             </property>
            </spacer>
           </item>
-          <item>
+          <item alignment="Qt::AlignVCenter">
            <widget class="QFrame" name="windowOptions">
             <property name="styleSheet">
-             <string notr="true">background-color: transparent;
-border: none;</string>
+             <string notr="true">QFrame#windowOptions {
+	background-color: transparent;
+	padding: 0px;
+	margin: 0px;
+}
+</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -127,19 +176,34 @@ border: none;</string>
              <property name="bottomMargin">
               <number>0</number>
              </property>
-             <item>
+             <item alignment="Qt::AlignVCenter">
               <widget class="QPushButton" name="btnMinimize">
+               <property name="minimumSize">
+                <size>
+                 <width>54</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>54</width>
+                 <height>45</height>
+                </size>
+               </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton {
+                <string notr="true">QPushButton#btnMinimize {
 	image: url(:/images/resources/icons/minus_alt.svg);
-min-width: 16px;
-min-height: 16px;
-max-width: 16px;
-padding-left: 20px;
-padding-right: 20px;
+	min-width: 18px;
+	max-width: 18px;
+	min-height: 45px;
+	max-height: 45px;
+	padding-left: 18px;
+	padding-right: 18px;
+	background-color: transparent;
+	border: 0px;
 }
 
-QPushButton:hover {
+QPushButton#btnMinimize:hover {
 	background-color: #3d4145;
 }
 </string>
@@ -149,19 +213,34 @@ QPushButton:hover {
                </property>
               </widget>
              </item>
-             <item>
+             <item alignment="Qt::AlignVCenter">
               <widget class="QPushButton" name="btnMaximize">
+               <property name="minimumSize">
+                <size>
+                 <width>55</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>55</width>
+                 <height>45</height>
+                </size>
+               </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton {
+                <string notr="true">QPushButton#btnMaximize {
 	image: url(:/images/resources/icons/square_alt.svg);
-min-width: 16px;
-min-height: 16px;
-max-width: 16px;
-padding-left: 20px;
-padding-right: 20px;
+	min-width: 15px;
+	max-width: 15px;
+	padding-left: 20px;
+	padding-right: 20px;
+	min-height: 45px;
+	max-height: 45px;
+	background-color: transparent;
+	border: 0px;
 }
 
-QPushButton:hover {
+QPushButton#btnMaximize:hover {
 	background-color: #3d4145;
 }
 
@@ -172,18 +251,40 @@ QPushButton:hover {
                </property>
               </widget>
              </item>
-             <item>
+             <item alignment="Qt::AlignVCenter">
               <widget class="QPushButton" name="btnClose">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Ignored">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>56</width>
+                 <height>45</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>56</width>
+                 <height>45</height>
+                </size>
+               </property>
                <property name="styleSheet">
-                <string notr="true">QPushButton {
+                <string notr="true">QPushButton#btnClose {
 	image: url(:/images/resources/icons/x_alt.svg);
-min-width: 16px;
-max-width: 16px;
-padding-left: 20px;
-padding-right: 20px;
+	min-width: 20px;
+	max-width: 20px;
+	min-height: 45px;
+	max-height: 45px;
+	padding-left: 18px;
+	padding-right: 18px;
+	background-color: transparent;
+	border: 0px;
 }
 
-QPushButton:hover {
+QPushButton#btnClose:hover {
 	background-color: #e81123;
 }
 
@@ -191,6 +292,9 @@ QPushButton:hover {
                </property>
                <property name="text">
                 <string/>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -230,8 +334,6 @@ QPushButton:hover {
 QPushButton {
 	background-color: #5468ff;
 	border-radius: 12px;
-	padding-left: 20px;
-	padding-right: 20px;
 	
 	min-height: 52px;
 	max-height: 52px;
@@ -243,7 +345,7 @@ QPushButton {
 }
 
 QLineEdit {
-	background-color: #262a34;
+	background-color: #26272D;
 	border-radius: 12px;
 	padding-left: 20px;
 	padding-right: 20px;
@@ -255,8 +357,7 @@ QLineEdit {
 	font-size: 14px;
 	font-weight: 400;
 	color: white;
-}
-</string>
+}</string>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <property name="spacing">
@@ -275,25 +376,12 @@ QLineEdit {
          <number>0</number>
         </property>
         <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QFrame" name="frame_3">
+         <widget class="QFrame" name="loginPageContent">
           <property name="styleSheet">
-           <string notr="true">max-width: 480px;</string>
+           <string notr="true">QFrame#loginPageContent {
+	padding: 30px;
+	max-width: 480px;
+}</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -373,58 +461,9 @@ margin-bottom: 20px;</string>
              <property name="text">
               <string>Login</string>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="frame_4">
-             <property name="styleSheet">
-              <string notr="true">margin-top: 10px;</string>
+             <property name="default">
+              <bool>true</bool>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::StyledPanel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Raised</enum>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_4">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="txtTitle_2">
-                <property name="styleSheet">
-                 <string notr="true">font-size: 14px;
-max-width: 155px;</string>
-                </property>
-                <property name="text">
-                 <string>Don't have an account? </string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="label">
-                <property name="styleSheet">
-                 <string notr="true">color: #5468ff;
-font-size: 14px;</string>
-                </property>
-                <property name="text">
-                 <string>Sign Up</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
            </item>
            <item>
@@ -442,22 +481,6 @@ font-size: 14px;</string>
            </item>
           </layout>
          </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Fixed</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </widget>
@@ -480,17 +503,26 @@ font-size: 14px;</string>
         </property>
         <item>
          <widget class="QFrame" name="sidebar">
+          <property name="minimumSize">
+           <size>
+            <width>52</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>69</width>
+            <width>52</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">border-right: 1px solid #2a2c33;
-background-color: #2A2C33;
-border-right: 1px solid black;
-width: 35px;</string>
+           <string notr="true">QFrame#sidebar {
+	background-color: #26272D;
+	border-right: 1px solid black;
+	min-width: 50px;
+	max-width: 50px;
+	padding-top: 30px;
+}</string>
           </property>
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
@@ -503,33 +535,17 @@ width: 35px;</string>
             <number>0</number>
            </property>
            <property name="leftMargin">
-            <number>16</number>
+            <number>0</number>
            </property>
            <property name="topMargin">
             <number>0</number>
            </property>
            <property name="rightMargin">
-            <number>16</number>
+            <number>0</number>
            </property>
            <property name="bottomMargin">
             <number>0</number>
            </property>
-           <item>
-            <spacer name="verticalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item>
             <widget class="QPushButton" name="btnActivity">
              <property name="cursor">
@@ -539,9 +555,6 @@ width: 35px;</string>
               <string notr="true">QPushButton {
     background-color: transparent;
     border: none;
-    border-radius: 10px;
-	padding-top: 15px;
-	padding-bottom: 15px;
 }</string>
              </property>
              <property name="text">
@@ -553,14 +566,14 @@ width: 35px;</string>
              </property>
              <property name="iconSize">
               <size>
-               <width>20</width>
-               <height>20</height>
+               <width>24</width>
+               <height>50</height>
               </size>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="btnSettings">
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
@@ -568,9 +581,6 @@ width: 35px;</string>
               <string notr="true">QPushButton {
     background-color: transparent;
     border: none;
-    border-radius: 10px;
-	padding-top: 15px;
-	padding-bottom: 15px;
 }</string>
              </property>
              <property name="text">
@@ -578,12 +588,12 @@ width: 35px;</string>
              </property>
              <property name="icon">
               <iconset resource="resources.qrc">
-               <normaloff>:/images/resources/icons_alt/settings.svg</normaloff>:/images/resources/icons_alt/settings.svg</iconset>
+               <normaloff>:/images/resources/icons_disabled/settings.svg</normaloff>:/images/resources/icons_disabled/settings.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>20</width>
-               <height>20</height>
+               <width>24</width>
+               <height>50</height>
               </size>
              </property>
             </widget>
@@ -610,9 +620,6 @@ width: 35px;</string>
               <string notr="true">QPushButton {
     background-color: transparent;
     border: none;
-    border-radius: 10px;
-	padding-top: 15px;
-	padding-bottom: 15px;
 }
 </string>
              </property>
@@ -621,7 +628,13 @@ width: 35px;</string>
              </property>
              <property name="icon">
               <iconset resource="resources.qrc">
-               <normaloff>:/images/resources/icons_alt/power.svg</normaloff>:/images/resources/icons_alt/power.svg</iconset>
+               <normaloff>:/images/resources/icons_disabled/power.svg</normaloff>:/images/resources/icons_disabled/power.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>50</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -648,10 +661,7 @@ width: 35px;</string>
          <widget class="QFrame" name="cards">
           <property name="styleSheet">
            <string notr="true">QFrame#cards {
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 30px;
-	padding-bottom: 30px;
+	padding: 30px;
 }</string>
           </property>
           <property name="frameShape">
@@ -665,6 +675,9 @@ width: 35px;</string>
             <number>0</number>
            </property>
            <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
             <number>0</number>
            </property>
            <property name="bottomMargin">
@@ -717,7 +730,7 @@ max-height: 40px;
 border-bottom: 1px solid black;
 border-top-left-radius: 10px;
 border-top-right-radius: 10px;
-background-color: #2a2c33;
+background-color: #26272D;
 margin-bottom: 10px;
 }</string>
                 </property>
@@ -868,7 +881,7 @@ text-align: left;</string>
                    </property>
                    <property name="styleSheet">
                     <string notr="true">QFrame#cpuUsageBar {
-    background-color: #262a34;
+    background-color: #26272D;
     border-radius: 4px;
 	
 	min-width: 238px;

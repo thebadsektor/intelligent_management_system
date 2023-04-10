@@ -1,5 +1,4 @@
 import sys
-from PyQt5 import QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -65,15 +64,21 @@ class LiveUpdateThread(QThread):
         self.running = False
 
        
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(CustomWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('main.ui', self)
 
         self.setWindowFlags(Qt.FramelessWindowHint)
 
-        # Set initial window size for Login
-        self.resize(440,600)
+        # Hide pcDetails
+        self.pcDetails.setVisible(False)
+
+        # Set window size for login
+        self.resize(440, 500)
+        # center window
+        center(self)
+        self.stackedWidget.setCurrentIndex(0)
 
         # Initialize mouse_pos attribute
         self.mouse_pos = None
@@ -84,11 +89,8 @@ class MainWindow(QtWidgets.QMainWindow):
         size_grip.setGeometry(self.rect().right() - 20, self.rect().bottom() - 20, 20, 20)
         size_grip.show()
 
-        # Set stackedWidget as centralWidget
-        # self.setCentralWidget(self.stackedWidget)
-
         # Set title
-        self.setWindowTitle('Intelligent Management System')
+        self.title.setText('Intelligent Management System')
 
         # Connections
         self.btnMinimize.clicked.connect(self.showMinimized)
@@ -97,31 +99,64 @@ class MainWindow(QtWidgets.QMainWindow):
         self.btnLogin.clicked.connect(self.login)
         self.btnLogout.clicked.connect(self.logout)
         self.btnSeeAll.clicked.connect(self.see_all)
+        self.btnSettings.enterEvent = lambda event: self.hover_entered(event, "btnSettings")
+        self.btnSettings.leaveEvent = lambda event: self.hover_left(event, "btnSettings")
+        self.btnLogout.enterEvent = lambda event: self.hover_entered(event, "btnLogout")
+        self.btnLogout.leaveEvent = lambda event: self.hover_left(event, "btnLogout")
 
-        # ------------ TEST ------------------
-        create_new_card(self)
+        # Install an event filter on the application to intercept key events
+        app = QApplication.instance()
+        app.installEventFilter(self)
 
-        # Threads
-        self.live_update_thread = LiveUpdateThread()
-        self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
-        self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
-        self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
-        self.live_update_thread.start()
 
-        self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
-        self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
-        self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
-        self.server_thread.start()
+        # ------------ TESTING PURPOSES ------------------
+        # create_new_card(self)
 
-        # Hide pcDetails
-        self.pcDetails.setVisible(False)
+        # # Threads
+        # self.live_update_thread = LiveUpdateThread()
+        # self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
+        # self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
+        # self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
+        # self.live_update_thread.start()
 
-        # Set window size for Main
-        self.resize(1280,720)
-        # center window
-        center(self)
-        self.stackedWidget.setCurrentIndex(1)  # Switch to the main page
-        # ------------ TEST ------------------
+        # self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
+        # self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
+        # self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
+        # self.server_thread.start()
+
+        # # Hide pcDetails
+        # self.pcDetails.setVisible(False)
+
+        # # Set window size for Main
+        # self.resize(1280,720)
+        # # center window
+        # center(self)
+        # self.stackedWidget.setCurrentIndex(1)  # Switch to the main page
+        # ------------ TESTING PURPOSES ------------------
+
+    def eventFilter(self, obj, event):
+        if event.type() == QKeyEvent.KeyPress and event.key() == Qt.Key_Return:
+            # Find the button by searching through the child widgets of the main window
+            for child_widget in self.findChildren(QPushButton):
+                if child_widget.text() == "Login":
+                    # Click the button
+                    child_widget.click()
+                    return True
+        
+        return super().eventFilter(obj, event)
+    
+
+    def hover_entered(self, event, btn_name):
+        if btn_name == 'btnSettings':
+            self.btnSettings.setIcon(QIcon(':/images/resources/icons_alt/settings.svg'))
+        elif btn_name == 'btnLogout':
+            self.btnLogout.setIcon(QIcon(':/images/resources/icons_alt/power.svg'))
+
+    def hover_left(self, event, btn_name):
+        if btn_name == 'btnSettings':
+            self.btnSettings.setIcon(QIcon(':/images/resources/icons_disabled/settings.svg'))
+        elif btn_name == 'btnLogout':
+            self.btnLogout.setIcon(QIcon(':/images/resources/icons_disabled/power.svg'))
 
     def update_cpu_usage(self, data):
         # Set CPU usage to widget
@@ -156,41 +191,6 @@ class MainWindow(QtWidgets.QMainWindow):
             cpuUsageValueText.setText("{:.2f}".format(cpu_usage) + '%')
             cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
 
-        
-    def closeEvent(self, event):
-        self.live_update_thread.stop()
-        event.accept()
-
-    def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self.mouse_pos = event.globalPos()
-            event.accept()
-
-    def mouseMoveEvent(self, event):
-        if self.mouse_pos:
-            delta = QPoint(event.globalPos() - self.mouse_pos)
-            self.move(self.pos() + delta)
-            self.mouse_pos = event.globalPos()
-            event.accept()
-
-    def mouseReleaseEvent(self, event):
-        self.mouse_pos = None
-        event.accept()
-
-    # Override the resizeEvent to move the QSizeGrip with the window
-    def resizeEvent(self, event):
-        size_grip = self.findChild(QSizeGrip)
-        size_grip.setGeometry(self.rect().right() - 20, self.rect().bottom() - 20, 20, 20)
-        super().resizeEvent(event)
-
-    def toggleMaximized(self):
-        if self.isMaximized():
-            self.showNormal()
-            self.btnMaximize.setStyleSheet("QPushButton {image: url(:/images/resources/icons_alt/square.svg); min-width: 16px; min-height: 16px; max-width: 16px; max-height: 16px;padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;} QPushButton:hover {background-color: #3d4145;}")
-        else:
-            self.showMaximized()
-            self.btnMaximize.setStyleSheet("QPushButton {image: url(:/images/resources/icons_alt/copy.svg); min-width: 16px; min-height: 16px; max-width: 16px; max-height: 16px; padding-top: 10px; padding-bottom: 10px; padding-left: 20px; padding-right: 20px;} QPushButton:hover {background-color: #3d4145;}")
-
     def see_all(self):
         # Show pcDetails
         self.pcDetails.setVisible(True)
@@ -213,7 +213,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.pcDetails.setVisible(False)
 
             # Set window size for Main
-            self.resize(1280,720)
+            self.resize(1000, 600)
+            
+            # set focus on header
+            self.header.setFocus()
+
             # center window
             center(self)
             self.stackedWidget.setCurrentIndex(1)  # Switch to the main page
@@ -221,11 +225,20 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self, 'Error', 'Invalid username or password.')
 
     def logout(self):
-        # Set window size for Main
+        # Clear login credentials
+        self.txtUsername.setText('')
+        self.txtPassword.setText('')
+
+        # Set focus to header
+        self.header.setFocus()
+
+        # Set window size for login
         self.resize(440,600)
+
         # center window
         center(self)
-        self.stackedWidget.setCurrentIndex(0)  # Switch to the main page
+
+        self.stackedWidget.setCurrentIndex(0)  # Switch to the login page
         self.live_update_thread.stop()
 
 if __name__ == '__main__':

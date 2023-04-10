@@ -1,8 +1,42 @@
-from PyQt5 import QtCore
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QSizeGrip
+
+class CustomWindow(QMainWindow):
+    def closeEvent(self, event):
+        event.accept()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.mouse_pos = event.globalPos()
+            event.accept()
+
+    def mouseMoveEvent(self, event):
+        if self.mouse_pos:
+            delta = QPoint(event.globalPos() - self.mouse_pos)
+            self.move(self.pos() + delta)
+            self.mouse_pos = event.globalPos()
+            event.accept()
+
+    def mouseReleaseEvent(self, event):
+        self.mouse_pos = None
+        event.accept()
+
+    def resizeEvent(self, event):
+        size_grip = self.findChild(QSizeGrip)
+        size_grip.setGeometry(self.rect().right() - 20, self.rect().bottom() - 20, 20, 20)
+        super().resizeEvent(event)
+
+    def toggleMaximized(self):
+        if self.isMaximized():
+            self.showNormal()
+            self.btnMaximize.setStyleSheet("QPushButton#btnMaximize {image: url(:/images/resources/icons/square_alt.svg); min-width: 15px; max-width: 15px; padding-left: 20px; padding-right: 20px; min-height: 45px; max-height: 45px; background-color: transparent; border: 0px;} QPushButton#btnMaximize:hover {background-color: #3d4145;}")
+        else:
+            self.showMaximized()
+            self.btnMaximize.setStyleSheet("QPushButton#btnMaximize {image: url(:/images/resources/icons_alt/copy.svg); min-width: 16px; max-width: 16px; padding-left: 20px; padding-right: 20px; min-height: 45px; max-height: 45px; background-color: transparent; border: 0px;} QPushButton#btnMaximize:hover {background-color: #3d4145;}")
+
 
 def center(self):
     # Get the size of the screen
@@ -34,7 +68,7 @@ def create_new_card(self):
     # card -> cardHeader
     card_header = QFrame()
     card_header.setObjectName(f'cardHeader{card_num}')
-    card_header.setStyleSheet('QFrame#cardHeader' + str(card_num) + '{min-height: 40px; max-height: 40px; border-bottom: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #2a2c33; margin-bottom: 10px;}')
+    card_header.setStyleSheet('QFrame#cardHeader' + str(card_num) + '{min-height: 40px; max-height: 40px; border-bottom: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #26272D; margin-bottom: 10px;}')
     card_header_layout = QHBoxLayout(card_header)
 
     # cardHeader -> PC
@@ -85,7 +119,7 @@ def create_new_card(self):
     # cardContent -> cpuUsageBar
     cpu_usage_bar = QFrame()
     cpu_usage_bar.setObjectName(f'cpuUsageBar{card_num}')
-    cpu_usage_bar.setStyleSheet('QFrame#cpuUsageBar' + str(card_num) + '{background-color: #262a34; border-radius: 4px; min-width: 238px; max-width: 238px; min-height: 10px; max-height: 10px;}')
+    cpu_usage_bar.setStyleSheet('QFrame#cpuUsageBar' + str(card_num) + '{background-color: #26272D; border-radius: 4px; min-width: 238px; max-width: 238px; min-height: 10px; max-height: 10px;}')
     cpu_usage_bar_layout = QHBoxLayout(cpu_usage_bar)
     cpu_usage_bar_layout.setSpacing(0)
     cpu_usage_bar_layout.setContentsMargins(0,0,0,0)
