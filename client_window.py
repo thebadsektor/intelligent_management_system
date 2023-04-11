@@ -91,6 +91,7 @@ class ClientWindow(CustomWindow):
         self.txtServerPort.setEnabled(False)
         self.txtServerPort.setStyleSheet('margin-bottom: 15px; background-color: #22242C;')
         self.btnConnect.setEnabled(False)
+        self.btnConnect.setText('Connected')
         self.btnConnect.setStyleSheet('margin-bottom: 30px; background-color: #4859D6;')
 
 
