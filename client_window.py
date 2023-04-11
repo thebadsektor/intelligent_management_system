@@ -84,6 +84,10 @@ class ClientWindow(CustomWindow):
         self.connection_thread.data_received.connect(self.display_received_data)
         self.connection_thread.start()
 
+        # Changes in UI
+        self.txtTitle.setText('Connected')
+        self.txtServerIP.setEnable(False)
+
     def display_received_data(self, data):
         print(data)
         self.txtReceivedData.setPlainText(data)

@@ -60,7 +60,7 @@ def create_new_card(self):
     # card
     card = QFrame()
     card.setObjectName(f'card{card_num}')
-    card.setStyleSheet('QFrame#card' + str(card_num) + '{border: 1px solid black; border-radius: 10px; background-color: transparent; max-width: 280px; max-height: 130px;}')
+    card.setStyleSheet('QFrame#card' + str(card_num) + '{border: 1px solid black; border-radius: 10px; background-color: transparent; max-width: 280px; max-height: 180px;}')
     card_layout = QVBoxLayout(card)
     card_layout.setSpacing(0)
     card_layout.setContentsMargins(0,0,0,0)
@@ -74,7 +74,7 @@ def create_new_card(self):
     card_header_layout.setContentsMargins(0,0,0,0)
 
     # cardHeader -> PC
-    pc = QPushButton('  PC')
+    pc = QPushButton('')
     pc.setObjectName(f'pc{card_num}')
     pc.setStyleSheet('font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: white; background-color: transparent; text-align: left; margin-left: 15px;')
     pc.setIcon(QIcon(':/images/resources/icons_alt/monitor.svg'))
@@ -134,8 +134,52 @@ def create_new_card(self):
     cpu_usage_bar_layout.addWidget(cpu_usage_value)
 
     # cpuUsageBar -> horizontalSpacer
-    horizontal_spacer = QSpacerItem(40,20, QSizePolicy.Expanding)
-    cpu_usage_bar_layout.addSpacerItem(horizontal_spacer)
+    cpu_usage_bar_layout.addSpacerItem(QSpacerItem(40,20, QSizePolicy.Expanding))
+
+    #### begin::Memory Usage ####
+
+    # # cardContent -> memoryUsage
+    # memory_usage = QFrame()
+    # memory_usage.setObjectName(f'memoryUsage{card_num}')
+    # memory_usage.setStyleSheet('QFrame#memoryUsage' + str(card_num) + '{margin-bottom: 10px;}')
+    # memory_usage_layout = QHBoxLayout(memory_usage)
+    # memory_usage_layout.setSpacing(0)
+    # memory_usage_layout.setContentsMargins(0,0,0,0)
+    # card_content_layout.addWidget(memory_usage)
+
+    # # memoryUsage -> memoryUsageLabel
+    # memoryUsageLabel = QLabel()
+    # memoryUsageLabel.setObjectName(f'memoryUsageLabel{card_num}')
+    # memoryUsageLabel.setStyleSheet('QLabel#memoryUsageLabel' + str(card_num) + '{font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: white;}')
+    # memoryUsageLabel.setText('Memory Usage')
+    # memory_usage_layout.addWidget(memoryUsageLabel)
+
+    # # memoryUsage -> memoryUsageText
+    # memoryUsageText = QLabel()
+    # memoryUsageText.setObjectName(f'memoryUsageText{card_num}')
+    # memoryUsageText.setStyleSheet('QLabel#memoryUsageText' + str(card_num) + '{font-family: "Segoe UI", sans-serif; color: #6a6b70;}')
+    # memoryUsageText.setText('0%')
+    # memory_usage_layout.addWidget(memoryUsageText, alignment=QtCore.Qt.AlignRight)
+
+    # # cardContent -> memoryUsageBar
+    # memory_usage_bar = QFrame()
+    # memory_usage_bar.setObjectName(f'memoryUsageBar{card_num}')
+    # memory_usage_bar.setStyleSheet('QFrame#memoryUsageBar' + str(card_num) + '{background-color: #26272D; border-radius: 4px; min-width: 248px; max-width: 248px; min-height: 10px; max-height: 10px;}')
+    # memory_usage_bar_layout = QHBoxLayout(memory_usage_bar)
+    # memory_usage_bar_layout.setSpacing(0)
+    # memory_usage_bar_layout.setContentsMargins(0,0,0,0)
+    # card_content_layout.addWidget(memory_usage_bar)
+
+    # # memoryUsageBar -> memoryUsageBarValue
+    # memory_usage_bar_value = QLabel()
+    # memory_usage_bar_value.setObjectName(f'memoryUsageBarValue{card_num}')
+    # memory_usage_bar_value.setStyleSheet('QLabel#memoryUsageBarValue' + str(card_num) + '{min-height: 10px; border-radius: 4px; background-color: #5468ff; min-width: 20px;}')
+    # memory_usage_bar_layout.addWidget(memory_usage_bar_value)
+
+    # # memoryUsageBar -> horizontalSpacer
+    # memory_usage_bar_layout.addSpacerItem(QSpacerItem(40,20, QSizePolicy.Expanding))
+
+    #### end::Memory Usage ####
 
     # cardContent -> btnSeeMore
     btn_see_more = QPushButton('See more')

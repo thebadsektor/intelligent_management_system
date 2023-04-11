@@ -27,9 +27,9 @@ class ServerThread(QThread):
 
         
 class LiveUpdateThread(QThread):
-    cpu_data_changed = pyqtSignal(str)
-    memory_data_changed = pyqtSignal(str)
-    disk_data_changed = pyqtSignal(str)
+    cpu_data_changed = pyqtSignal(float)
+    memory_data_changed = pyqtSignal(int, int)
+    disk_data_changed = pyqtSignal(int, int)
     
     def __init__(self):
         super().__init__()
@@ -37,25 +37,23 @@ class LiveUpdateThread(QThread):
         
     def run(self):
         while self.running:
-            # Get CPU usage live data and format it
+            # Get CPU usage
             cpu_usage = monitor.get_cpu_usage()
-            cpu_usage_formatted = "{:.2f}".format(cpu_usage) + "%"
-            print(f'CPU Usage: {cpu_usage_formatted}')
 
-            # Get memory usage live data
+            # Get memory usage
             memory_usage = monitor.get_memory_usage()
-            memory_usage_formatted = f"{memory_usage['available']} MB / {memory_usage['total']} MB" 
-            print(f'Memory Usage: {memory_usage_formatted}')
+            available_memory_usage = memory_usage['available']
+            total_memory_usage = memory_usage['total']
 
             # Get disk usage
             disk_usage = monitor.get_disk_usage()
-            disk_usage_formatted = f"{disk_usage['available']} MB / {disk_usage['total']} MB" 
-            print(f'Disk Usage: {disk_usage_formatted}')
+            available_disk_usage = disk_usage['available']
+            total_disk_usage = disk_usage['total']
             
             # Emit signal with updated data
-            self.cpu_data_changed.emit(cpu_usage_formatted)
-            self.memory_data_changed.emit(memory_usage_formatted)
-            self.disk_data_changed.emit(disk_usage_formatted)
+            self.cpu_data_changed.emit(cpu_usage)
+            self.memory_data_changed.emit(available_memory_usage, total_memory_usage)
+            self.disk_data_changed.emit(available_disk_usage, total_disk_usage)
             
             # Wait for 1 second before updating again
             time.sleep(1)
@@ -70,9 +68,6 @@ class MainWindow(CustomWindow):
         uic.loadUi('main.ui', self)
 
         self.setWindowFlags(Qt.FramelessWindowHint)
-
-        # Hide pcDetails
-        self.pcDetails.setVisible(False)
 
         # Set window size for login
         self.resize(440, 500)
@@ -107,32 +102,6 @@ class MainWindow(CustomWindow):
         app = QApplication.instance()
         app.installEventFilter(self)
 
-
-        # ------------ TESTING PURPOSES ------------------
-        # create_new_card(self)
-
-        # # Threads
-        # self.live_update_thread = LiveUpdateThread()
-        # self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
-        # self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
-        # self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
-        # self.live_update_thread.start()
-
-        # self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
-        # self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
-        # self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
-        # self.server_thread.start()
-
-        # # Hide pcDetails
-        # self.pcDetails.setVisible(False)
-
-        # # Set window size for Main
-        # self.resize(1280,720)
-        # # center window
-        # center(self)
-        # self.stackedWidget.setCurrentIndex(1)  # Switch to the main page
-        # ------------ TESTING PURPOSES ------------------
-
     def eventFilter(self, obj, event):
         if event.type() == QKeyEvent.KeyPress and event.key() == Qt.Key_Return:
             # Find the button by searching through the child widgets of the main window
@@ -157,38 +126,45 @@ class MainWindow(CustomWindow):
         elif btn_name == 'btnLogout':
             self.btnLogout.setIcon(QIcon(':/images/resources/icons_disabled/power.svg'))
 
-    def update_cpu_usage(self, data):
-        # Set CPU usage to widget
-        cpu_usage = float(data[:-1])
-        self.cpuUsageValueText.setText(data)
+    # PC SERVER
+    def update_server_cpu_usage(self, cpu_usage):
+        self.cpuUsageValueText.setText("{:.2f}".format(cpu_usage) + "%")
         self.cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
 
-    def update_memory_usage(self, data):
-        # Set memory usage to widget
-        self.txtMemoryUsage.setText(data)
+    def update_server_memory_usage(self, available_memory_usage, total_memory_usage):
+        self.memoryUsageText.setText(f"{available_memory_usage}MB / {total_memory_usage}MB")
+        self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (available_memory_usage/total_memory_usage)*100))
 
-    def update_disk_usage(self, data):
-        # Set memory usage to widget
-        self.txtDiskUsage.setText(data)
+    def update_server_disk_usage(self, available_disk_usage, total_disk_usage):
+        self.diskUsageText.setText(f"{available_disk_usage}MB / {total_disk_usage}MB")
+        self.diskUsageBarValue.setFixedWidth(int((self.diskUsageBar.width()/100) * (available_disk_usage/total_disk_usage)*100))
 
-    # Update clients
-    def update_client_hostname(self, data):
-        print(f'Updated client hostname: ', data)
-        pc = self.findChild(QPushButton, f'pc{2}')
-
+    # PC CLIENT/S
+    def spawn_cards(self):
+        create_new_card(self)
+    
+    def update_client_hostname(self, client_num, hostname):
+        pc = self.findChild(QPushButton, f'pc{client_num}')
         if pc is not None:
-            pc.setText(f'  {data}')
+            pc.setText(f'  {hostname}')
 
-    def update_client_cpu_usage(self, data):
-        cpu_usage = float(data)
-        print(f'Updated client cpu usage: ', cpu_usage)
-        cpuUsageValueText = self.findChild(QLabel, f'cpuUsageValueText{2}')
-        cpuUsageValue = self.findChild(QLabel, f'cpuUsageValue{2}')
-        cpuUsageBar = self.findChild(QLabel, f'cpuUsageBar{2}')
+    def update_client_cpu_usage(self, client_num, cpu_usage):
+        cpuUsageValueText = self.findChild(QLabel, f'cpuUsageValueText{client_num}')
+        cpuUsageValue = self.findChild(QLabel, f'cpuUsageValue{client_num}')
+        cpuUsageBar = self.findChild(QLabel, f'cpuUsageBar{client_num}')
 
         if cpuUsageValueText is not None:
-            cpuUsageValueText.setText("{:.2f}".format(cpu_usage) + '%')
-            cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
+            cpuUsageValueText.setText(f"{cpu_usage}%")
+            cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * float(cpu_usage)))
+
+    def update_client_memory_usage(self, client_num, available_memory_usage, total_memory_usage):
+        memoryUsageText = self.findChild(QLabel, f'memoryUsageText{client_num}')
+        memoryUsageBarValue = self.findChild(QLabel, f'memoryUsageBarValue{client_num}')
+        memoryUsageBar = self.findChild(QLabel, f'memoryUsageBar{client_num}')
+
+        if memoryUsageText is not None:
+            self.memoryUsageText.setText(f"{available_memory_usage}MB / {total_memory_usage}MB")
+            self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (available_memory_usage/total_memory_usage)*100))
 
     def see_more(self):
         # See more
@@ -218,24 +194,18 @@ class MainWindow(CustomWindow):
 
         # Check the username and password
         if username == 'admin' and password == 'admin':
-            # Create thread for updating live data
+            # Threads
             self.live_update_thread = LiveUpdateThread()
-            self.live_update_thread.cpu_data_changed.connect(self.update_cpu_usage)
-            self.live_update_thread.memory_data_changed.connect(self.update_memory_usage)
-            self.live_update_thread.disk_data_changed.connect(self.update_disk_usage)
+            self.live_update_thread.cpu_data_changed.connect(self.update_server_cpu_usage)
+            self.live_update_thread.memory_data_changed.connect(self.update_server_memory_usage)
+            self.live_update_thread.disk_data_changed.connect(self.update_server_disk_usage)
             self.live_update_thread.start()
 
-            # Hide pcDetails
-            self.pcDetails.setVisible(False)
-
-            # Create cards
-            create_new_card(self)
-            create_new_card(self)
-            create_new_card(self)
-
             self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
+            self.server_thread.signal.new_client_connected.connect(self.spawn_cards)
             self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
             self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
+            self.server_thread.signal.memory_data_changed.connect(self.update_client_memory_usage)
             self.server_thread.start()
             
             self.btnSeeMore.clicked.connect(self.see_more)
