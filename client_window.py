@@ -87,11 +87,11 @@ class ClientWindow(CustomWindow):
         # Changes in UI
         self.txtTitle.setText('Connected')
         self.txtServerIP.setEnabled(False)
-        self.txtServerIP.setStylesheet('margin-bottom: 20px; background-color: #22242C;')
+        self.txtServerIP.setStyleSheet('margin-bottom: 20px; background-color: #22242C;')
         self.txtServerPort.setEnabled(False)
-        self.txtServerPort.setStylesheet('margin-bottom: 15px; background-color: #22242C;')
+        self.txtServerPort.setStyleSheet('margin-bottom: 15px; background-color: #22242C;')
         self.btnConnect.setEnabled(False)
-        self.btnConnect.setStylesheet('margin-bottom: 30px; background-color: #4859D6;')
+        self.btnConnect.setStyleSheet('margin-bottom: 30px; background-color: #4859D6;')
 
 
 
