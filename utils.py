@@ -60,7 +60,7 @@ def create_new_card(self):
     # card
     card = QFrame()
     card.setObjectName(f'card{card_num}')
-    card.setStyleSheet('QFrame#card' + str(card_num) + '{border: 1px solid black; border-radius: 10px; background-color: transparent; max-width: 280px; max-height: 140px;}')
+    card.setStyleSheet('QFrame#card' + str(card_num) + '{border: 1px solid black; border-radius: 10px; background-color: transparent; max-width: 280px; max-height: 130px;}')
     card_layout = QVBoxLayout(card)
     card_layout.setSpacing(0)
     card_layout.setContentsMargins(0,0,0,0)
@@ -68,13 +68,15 @@ def create_new_card(self):
     # card -> cardHeader
     card_header = QFrame()
     card_header.setObjectName(f'cardHeader{card_num}')
-    card_header.setStyleSheet('QFrame#cardHeader' + str(card_num) + '{min-height: 40px; max-height: 40px; border-bottom: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #26272D; margin-bottom: 10px;}')
+    card_header.setStyleSheet('QFrame#cardHeader' + str(card_num) + '{min-height: 40px; max-height: 40px; border-bottom: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: #26272D;}')
     card_header_layout = QHBoxLayout(card_header)
+    card_header_layout.setSpacing(0)
+    card_header_layout.setContentsMargins(0,0,0,0)
 
     # cardHeader -> PC
     pc = QPushButton('  PC')
     pc.setObjectName(f'pc{card_num}')
-    pc.setStyleSheet('font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: white; background-color: transparent; text-align: left;')
+    pc.setStyleSheet('font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: white; background-color: transparent; text-align: left; margin-left: 15px;')
     pc.setIcon(QIcon(':/images/resources/icons_alt/monitor.svg'))
     pc.setIconSize(QSize(20, 20))   
     card_header_layout.addWidget(pc)
@@ -82,13 +84,13 @@ def create_new_card(self):
     #cardHeader -> status
     status = QLabel()
     status.setObjectName(f'status{card_num}')
-    status.setStyleSheet('QLabel#status' + str(card_num) + '{min-width: 6px; max-height: 6px; min-width: 6px; max-width: 6px; border-radius: 2px; background-color: green;}')
+    status.setStyleSheet('QLabel#status' + str(card_num) + '{min-width: 6px; max-height: 6px; min-width: 6px; max-width: 6px; border-radius: 2px; background-color: #28A745; margin-right: 15px;}')
     card_header_layout.addWidget(status)
 
     # card-> cardContent
     card_content = QFrame()
     card_content.setObjectName(f'cardContent{card_num}')
-    card_content.setStyleSheet('QFrame#cardContent' + str(card_num) + '{margin-left: 20px; margin-right: 20px;}')
+    card_content.setStyleSheet('QFrame#cardContent' + str(card_num) + '{margin: 15px}')
     card_content_layout = QVBoxLayout(card_content)
     card_content_layout.setSpacing(0)
     card_content_layout.setContentsMargins(0,0,0,0)
@@ -119,7 +121,7 @@ def create_new_card(self):
     # cardContent -> cpuUsageBar
     cpu_usage_bar = QFrame()
     cpu_usage_bar.setObjectName(f'cpuUsageBar{card_num}')
-    cpu_usage_bar.setStyleSheet('QFrame#cpuUsageBar' + str(card_num) + '{background-color: #26272D; border-radius: 4px; min-width: 238px; max-width: 238px; min-height: 10px; max-height: 10px;}')
+    cpu_usage_bar.setStyleSheet('QFrame#cpuUsageBar' + str(card_num) + '{background-color: #26272D; border-radius: 4px; min-width: 248px; max-width: 248px; min-height: 10px; max-height: 10px;}')
     cpu_usage_bar_layout = QHBoxLayout(cpu_usage_bar)
     cpu_usage_bar_layout.setSpacing(0)
     cpu_usage_bar_layout.setContentsMargins(0,0,0,0)
@@ -135,16 +137,16 @@ def create_new_card(self):
     horizontal_spacer = QSpacerItem(40,20, QSizePolicy.Expanding)
     cpu_usage_bar_layout.addSpacerItem(horizontal_spacer)
 
-    # cardContent -> btnSeeAll
-    btn_see_all = QPushButton('See all')
-    btn_see_all.setObjectName(f'btnSeeAll{card_num}')
-    btn_see_all.setStyleSheet('QPushButton#btnSeeAll' + str(card_num) + '{font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: #5568fe; background-color: transparent; padding: 0px; margin-top: 10px;}')
-    btn_see_all.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
-    card_content_layout.addWidget(btn_see_all, alignment=QtCore.Qt.AlignLeft)
+    # cardContent -> btnSeeMore
+    btn_see_more = QPushButton('See more')
+    btn_see_more.setObjectName(f'btnSeeMore{card_num}')
+    btn_see_more.setStyleSheet('QPushButton#btnSeeMore' + str(card_num) + '{font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: #5568fe; background-color: transparent; padding: 0px; margin-top: 10px;}')
+    btn_see_more.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+    card_content_layout.addWidget(btn_see_more, alignment=QtCore.Qt.AlignLeft)
 
-    # cardContent -> vertical_spacer
-    vertical_spacer = QSpacerItem(20,40, QSizePolicy.Expanding)
-    card_content_layout.addSpacerItem(vertical_spacer)
+    # # cardContent -> vertical_spacer
+    # vertical_spacer = QSpacerItem(20,40, QSizePolicy.Expanding)
+    # card_content_layout.addSpacerItem(vertical_spacer)
 
     # add the widgets
     card_layout.addWidget(card_header, alignment=QtCore.Qt.AlignTop)
@@ -153,6 +155,6 @@ def create_new_card(self):
     # add the new card to cards
     if card_num <= 6:
         row, col = divmod(card_num - 1, 3)
-        cards_layout.addWidget(card, row, col)
+        cards_layout.addWidget(card, row, col, alignment=QtCore.Qt.AlignTop)
 
 

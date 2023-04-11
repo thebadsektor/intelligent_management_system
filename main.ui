@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>694</width>
-    <height>527</height>
+    <width>970</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -657,7 +657,7 @@ margin-bottom: 20px;</string>
           </layout>
          </widget>
         </item>
-        <item>
+        <item alignment="Qt::AlignTop">
          <widget class="QFrame" name="cards">
           <property name="styleSheet">
            <string notr="true">QFrame#cards {
@@ -686,7 +686,7 @@ margin-bottom: 20px;</string>
            <property name="spacing">
             <number>20</number>
            </property>
-           <item row="0" column="0">
+           <item row="0" column="0" alignment="Qt::AlignTop">
             <widget class="QFrame" name="card">
              <property name="styleSheet">
               <string notr="true">QFrame#card {
@@ -694,7 +694,7 @@ margin-bottom: 20px;</string>
 	border-radius: 10px;
 	background-color: transparent;
 	max-width: 280px;
-	max-height: 140px;
+	max-height: 255px;
 }
 
 </string>
@@ -731,7 +731,6 @@ border-bottom: 1px solid black;
 border-top-left-radius: 10px;
 border-top-right-radius: 10px;
 background-color: #26272D;
-margin-bottom: 10px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -741,6 +740,21 @@ margin-bottom: 10px;
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
                  <item alignment="Qt::AlignLeft">
                   <widget class="QPushButton" name="PC">
                    <property name="styleSheet">
@@ -749,7 +763,8 @@ font-size: 12px;
 font-weight: 500;
 color: white;
 background-color: transparent;
-text-align: left;</string>
+text-align: left;
+margin-left: 15px;</string>
                    </property>
                    <property name="text">
                     <string>  SERVER</string>
@@ -769,7 +784,8 @@ text-align: left;</string>
 	min-width: 6px;
 	max-width: 6px;
 	border-radius: 2px;
-	background-color: green;
+	background-color: #28A745;
+	margin-right: 15px;
 }</string>
                    </property>
                    <property name="text">
@@ -784,8 +800,7 @@ text-align: left;</string>
                <widget class="QFrame" name="cardContent">
                 <property name="styleSheet">
                  <string notr="true">QFrame#cardContent {
-	margin-left: 20px;
-	margin-right: 20px;
+	margin: 15px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -812,6 +827,12 @@ text-align: left;</string>
                  </property>
                  <item>
                   <widget class="QFrame" name="cpuUsage">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="styleSheet">
                     <string notr="true">QFrame#cpuUsage {
 	margin-bottom: 10px;
@@ -839,7 +860,7 @@ text-align: left;</string>
                     <property name="bottomMargin">
                      <number>0</number>
                     </property>
-                    <item>
+                    <item alignment="Qt::AlignTop">
                      <widget class="QLabel" name="txtCpuUsage">
                       <property name="styleSheet">
                        <string notr="true">QLabel#txtCpuUsage {
@@ -854,7 +875,7 @@ text-align: left;</string>
                       </property>
                      </widget>
                     </item>
-                    <item alignment="Qt::AlignRight">
+                    <item alignment="Qt::AlignRight|Qt::AlignTop">
                      <widget class="QLabel" name="cpuUsageValueText">
                       <property name="styleSheet">
                        <string notr="true">QLabel#cpuUsageValueText {
@@ -871,7 +892,7 @@ text-align: left;</string>
                    </layout>
                   </widget>
                  </item>
-                 <item>
+                 <item alignment="Qt::AlignTop">
                   <widget class="QFrame" name="cpuUsageBar">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -884,8 +905,8 @@ text-align: left;</string>
     background-color: #26272D;
     border-radius: 4px;
 	
-	min-width: 238px;
-	max-width: 238px;
+	min-width: 248px;
+	max-width: 248px;
 
 	min-height: 10px;
 	max-height: 10px;
@@ -946,13 +967,286 @@ text-align: left;</string>
                    </layout>
                   </widget>
                  </item>
-                 <item alignment="Qt::AlignLeft">
-                  <widget class="QPushButton" name="btnSeeAll">
+                 <item>
+                  <widget class="QFrame" name="memoryUsage">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#memoryUsage {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_4">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item alignment="Qt::AlignTop">
+                     <widget class="QLabel" name="memoryUsageLabel">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel#memoryUsageLabel {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	color: white;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Memory Usage</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignRight|Qt::AlignTop">
+                     <widget class="QLabel" name="memoryUsageText">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel#memoryUsageText {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	color: #6a6b70;
+}
+</string>
+                      </property>
+                      <property name="text">
+                       <string>234MB / 500MB</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="memoryUsageBar">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#memoryUsageBar {
+    background-color: #26272D;
+    border-radius: 4px;
+	
+	min-width: 248px;
+	max-width: 248px;
+
+	min-height: 10px;
+	max-height: 10px;
+}</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_11">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="memoryUsageBarValue">
+                      <property name="styleSheet">
+                       <string notr="true">QFrame#memoryUsageBarValue {
+	min-height: 10px;
+	border-radius: 4px;
+	background-color: #5468ff;
+	min-width: 20px;
+}
+
+</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_2">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>215</width>
+                        <height>7</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="diskUsage">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#diskUsage {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_12">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="diskUsageLabel">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel#diskUsageLabel {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	color: white;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>Disk Usage</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item alignment="Qt::AlignRight">
+                     <widget class="QLabel" name="diskUsageText">
+                      <property name="styleSheet">
+                       <string notr="true">QLabel#diskUsageText {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	color: #6a6b70;
+}
+</string>
+                      </property>
+                      <property name="text">
+                       <string>1024MB / 2048MB</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="diskUsageBar">
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#diskUsageBar {
+    background-color: #26272D;
+    border-radius: 4px;
+	
+	min-width: 248px;
+	max-width: 248px;
+
+	min-height: 10px;
+	max-height: 10px;
+}</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="diskUsageBarValue">
+                      <property name="styleSheet">
+                       <string notr="true">QFrame#diskUsageBarValue {
+	min-height: 10px;
+	border-radius: 4px;
+	background-color: #5468ff;
+	min-width: 20px;
+}
+</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <spacer name="horizontalSpacer_3">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item alignment="Qt::AlignLeft|Qt::AlignTop">
+                  <widget class="QPushButton" name="btnSeeMore">
                    <property name="cursor">
                     <cursorShape>PointingHandCursor</cursorShape>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">QPushButton#btnSeeAll {
+                    <string notr="true">QPushButton#btnSeeMore {
 	font-family: &quot;Segoe UI&quot;, sans-serif;
 	font-size: 12px;
 	font-weight: 500;
@@ -964,22 +1258,31 @@ text-align: left;</string>
 </string>
                    </property>
                    <property name="text">
-                    <string>See all</string>
+                    <string>See more</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <spacer name="verticalSpacer_6">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                 <item alignment="Qt::AlignLeft|Qt::AlignTop">
+                  <widget class="QPushButton" name="btnSeeLess">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
                    </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton#btnSeeLess {
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	color: #5568fe;
+	background-color: transparent;
+	padding: 0px;	
+	margin-top: 10px;
+}
+</string>
                    </property>
-                  </spacer>
+                   <property name="text">
+                    <string>See Less</string>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>

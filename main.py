@@ -98,7 +98,6 @@ class MainWindow(CustomWindow):
         self.btnClose.clicked.connect(self.close)
         self.btnLogin.clicked.connect(self.login)
         self.btnLogout.clicked.connect(self.logout)
-        self.btnSeeAll.clicked.connect(self.see_all)
         self.btnSettings.enterEvent = lambda event: self.hover_entered(event, "btnSettings")
         self.btnSettings.leaveEvent = lambda event: self.hover_left(event, "btnSettings")
         self.btnLogout.enterEvent = lambda event: self.hover_entered(event, "btnLogout")
@@ -191,10 +190,27 @@ class MainWindow(CustomWindow):
             cpuUsageValueText.setText("{:.2f}".format(cpu_usage) + '%')
             cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
 
-    def see_all(self):
-        # Show pcDetails
-        self.pcDetails.setVisible(True)
-
+    def see_more(self):
+        # See more
+        self.btnSeeMore.setVisible(False)
+        self.btnSeeLess.setVisible(True)
+        self.memoryUsage.setVisible(True)
+        self.memoryUsageBar.setVisible(True)
+        self.diskUsage.setVisible(True)
+        self.diskUsageBar.setVisible(True)
+        self.card.setMaximumHeight(255)
+        self.header.setFocus()
+    
+    def see_less(self):
+        # See less
+        self.btnSeeMore.setVisible(True)
+        self.btnSeeLess.setVisible(False)
+        self.memoryUsage.setVisible(False)
+        self.memoryUsageBar.setVisible(False)
+        self.diskUsage.setVisible(False)
+        self.diskUsageBar.setVisible(False)
+        self.card.setMaximumHeight(130)
+        self.header.setFocus()
 
     def login(self):
         username = self.txtUsername.text()
@@ -211,6 +227,28 @@ class MainWindow(CustomWindow):
 
             # Hide pcDetails
             self.pcDetails.setVisible(False)
+
+            # Create cards
+            create_new_card(self)
+            create_new_card(self)
+            create_new_card(self)
+
+            self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
+            self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
+            self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
+            self.server_thread.start()
+            
+            self.btnSeeMore.clicked.connect(self.see_more)
+            self.btnSeeLess.clicked.connect(self.see_less)
+
+            # See less
+            self.btnSeeMore.setVisible(True)
+            self.btnSeeLess.setVisible(False)
+            self.memoryUsage.setVisible(False)
+            self.memoryUsageBar.setVisible(False)
+            self.diskUsage.setVisible(False)
+            self.diskUsageBar.setVisible(False)
+            self.card.setMaximumHeight(130)
 
             # Set window size for Main
             self.resize(1000, 600)
