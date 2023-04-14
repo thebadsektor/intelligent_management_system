@@ -95,8 +95,6 @@ class ClientWindow(CustomWindow):
         self.btnConnect.setStyleSheet('margin-bottom: 30px; background-color: #4859D6;')
 
 
-
-
     def display_received_data(self, data):
         print(data)
         self.txtReceivedData.setPlainText(data)
