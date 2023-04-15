@@ -157,14 +157,14 @@ class MainWindow(CustomWindow):
             cpuUsageValueText.setText(f"{cpu_usage}%")
             cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * float(cpu_usage)))
 
-    def update_client_memory_usage(self, client_num, available_memory_usage, total_memory_usage):
+    def update_client_memory_usage(self, client_num, used_memory_usage, total_memory_usage):
         memoryUsageText = self.findChild(QLabel, f'memoryUsageText{client_num}')
         memoryUsageBarValue = self.findChild(QLabel, f'memoryUsageBarValue{client_num}')
         memoryUsageBar = self.findChild(QLabel, f'memoryUsageBar{client_num}')
 
         if memoryUsageText is not None:
-            self.memoryUsageText.setText(f"{available_memory_usage}MB / {total_memory_usage}MB")
-            self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (available_memory_usage/total_memory_usage)*100))
+            self.memoryUsageText.setText(f"{used_memory_usage}MB / {total_memory_usage}MB")
+            self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (used_memory_usage/total_memory_usage)*100))
 
     def see_more(self):
         # See more

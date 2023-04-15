@@ -1,6 +1,5 @@
 import json
 import socket
-import psutil
 import time
 from monitor import get_network_info, get_os_info, get_cpu_usage, get_memory_usage, get_disk_usage
 
@@ -15,13 +14,24 @@ def connect_to_server(host, port, callback=None):
 
         while True:
             cpu_usage = get_cpu_usage()
-            available_memory_usage = get_memory_usage()['available']
+            used_memory_usage = get_memory_usage()['used']
+            total_memory_usage = get_memory_usage()['total']
+            used_disk_usage = get_disk_usage()['used']
+            total_disk_usage = get_disk_usage()['total']
 
             if callback is not None:
                 callback(f"Client {network_info['hostname']} - {network_info['ip_address']} : {cpu_usage}%")
-            data = {"cpu_usage": cpu_usage, "available_memory_usage": available_memory_usage}
+
+            data = {
+                "cpu_usage": cpu_usage, 
+                "used_memory_usage": used_memory_usage, 
+                "total_memory_usage": total_memory_usage,
+                "used_disk_usage": used_disk_usage,
+                "total_disk_usage": total_disk_usage}
 
             s.sendall(json.dumps(data).encode('utf-8'))
+
+            # Wait every 1 second before sending again
             time.sleep(1)
         
 

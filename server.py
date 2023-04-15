@@ -14,13 +14,17 @@ class Signal(QObject):
 def handle_client(client_socket, addr, signal, client_num):
     print(f"Client #{client_num} {addr} connected")
 
-    data = json.loads(client_socket.recv(1024).decode('utf-8'))
-    print(f'START: {data}')
+    system_info = json.loads(client_socket.recv(1024).decode('utf-8'))
+    network_info = system_info['network_info']
+
+    signal.hostname_changed.emit(client_num, network_info['hostname'])
 
     with client_socket:
         while True:
             data = json.loads(client_socket.recv(1024).decode('utf-8'))
-            print(f'DATA: {data}')
+
+            signal.cpu_data_changed.emit(client_num, str(data['cpu_usage']))
+            signal.memory_data_changed.emit(client_num, data['used_memory_usage'], data['total_memory_usage'])
 
 
 def start_server(host, port, signal):
