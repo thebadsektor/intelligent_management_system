@@ -8,7 +8,7 @@ from utils import *
 class Signal(QObject):
     new_client_connected = pyqtSignal(int)
     hostname_changed = pyqtSignal(int, str)
-    cpu_data_changed = pyqtSignal(int, float)
+    cpu_data_changed = pyqtSignal(int, str)
     memory_data_changed = pyqtSignal(int, float, float)
     disk_data_changed = pyqtSignal(int, float, float)
 

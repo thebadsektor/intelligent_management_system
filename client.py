@@ -23,7 +23,7 @@ def connect_to_server(host, port, callback=None):
                 callback(f"Client {network_info['hostname']} - {network_info['ip_address']} : {cpu_usage}%")
 
             data = {
-                "cpu_usage": round(cpu_usage, 2), 
+                "cpu_usage": "{:.2f}".format(cpu_usage), 
                 "used_memory_usage": round(used_memory_usage / 1024, 2), 
                 "total_memory_usage": round(total_memory_usage / 1024, 2),
                 "used_disk_usage": round(used_disk_usage / 1024, 2),
