@@ -6,7 +6,7 @@ from PyQt5.QtCore import QObject, pyqtSignal
 from utils import *
 
 class Signal(QObject):
-    new_client_connected = pyqtSignal()
+    new_client_connected = pyqtSignal(int)
     hostname_changed = pyqtSignal(int, str)
     cpu_data_changed = pyqtSignal(int, float)
     memory_data_changed = pyqtSignal(int, float, float)
@@ -44,7 +44,7 @@ def start_server(host, port, signal):
             client_socket, addr = s.accept()
             thread = threading.Thread(target=handle_client, args=(client_socket, addr, signal, client_num))
             thread.start()
-            signal.new_client_connected.emit()
+            signal.new_client_connected.emit(client_num)
             client_num += 1
 
 if __name__ == '__main__':

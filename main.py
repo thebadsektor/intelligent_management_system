@@ -28,8 +28,8 @@ class ServerThread(QThread):
         
 class LiveUpdateThread(QThread):
     cpu_data_changed = pyqtSignal(float)
-    memory_data_changed = pyqtSignal(int, int)
-    disk_data_changed = pyqtSignal(int, int)
+    memory_data_changed = pyqtSignal(float, float)
+    disk_data_changed = pyqtSignal(float, float)
     
     def __init__(self):
         super().__init__()
@@ -42,13 +42,13 @@ class LiveUpdateThread(QThread):
 
             # Get memory usage
             memory_usage = monitor.get_memory_usage()
-            used_memory_usage = memory_usage['used']
-            total_memory_usage = memory_usage['total']
+            used_memory_usage = round(memory_usage['used'] / 1024, 2)
+            total_memory_usage = round(memory_usage['total'] / 1024, 2)
 
             # Get disk usage
             disk_usage = monitor.get_disk_usage()
-            used_disk_usage = disk_usage['used']
-            total_disk_usage = disk_usage['total']
+            used_disk_usage = round(disk_usage['used'] / 1024, 2)
+            total_disk_usage = round(disk_usage['total'] / 1024, 2)
             
             # Emit signal with updated data
             self.cpu_data_changed.emit(cpu_usage)
@@ -132,16 +132,24 @@ class MainWindow(CustomWindow):
         self.cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
 
     def update_server_memory_usage(self, used_memory_usage, total_memory_usage):
-        self.memoryUsageText.setText(f"{used_memory_usage}MB / {total_memory_usage}MB")
+        self.memoryUsageText.setText(f"{used_memory_usage} GB / {total_memory_usage} GB")
         self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (used_memory_usage/total_memory_usage)*100))
 
     def update_server_disk_usage(self, used_disk_usage, total_disk_usage):
-        self.diskUsageText.setText(f"{used_disk_usage}MB / {total_disk_usage}MB")
+        self.diskUsageText.setText(f"{used_disk_usage} GB / {total_disk_usage} GB")
         self.diskUsageBarValue.setFixedWidth(int((self.diskUsageBar.width()/100) * (used_disk_usage/total_disk_usage)*100))
 
     # PC CLIENT/S
-    def spawn_cards(self):
+    def spawn_cards(self, client_num):
         create_new_card(self)
+
+        btnSeeMore = self.findChild(QPushButton, f'btnSeeMore{client_num}')
+        btnSeeLess = self.findChild(QPushButton, f'btnSeeLess{client_num}')
+
+        btnSeeMore.clicked.connect(lambda: self.see_more(client_num))
+        btnSeeLess.clicked.connect(lambda: self.see_less(client_num))
+
+        self.see_less(client_num)
     
     def update_client_hostname(self, client_num, hostname):
         pc = self.findChild(QPushButton, f'pc{client_num}')
@@ -163,7 +171,7 @@ class MainWindow(CustomWindow):
         memoryUsageBar = self.findChild(QFrame, f'memoryUsageBar{client_num}')
 
         if memoryUsageText and memoryUsageBarValue and memoryUsageBar:
-            memoryUsageText.setText(f"{used_memory_usage}GB / {total_memory_usage}GB")
+            memoryUsageText.setText(f"{used_memory_usage} GB / {total_memory_usage} GB")
             memoryUsageBarValue.setFixedWidth(int((memoryUsageBar.width()/100) * float((used_memory_usage/total_memory_usage)*100)))
 
     def update_client_disk_usage(self, client_num, used_disk_usage, total_disk_usage):
@@ -172,29 +180,49 @@ class MainWindow(CustomWindow):
         diskUsageBar = self.findChild(QFrame, f'diskUsageBar{client_num}')
 
         if diskUsageText and diskUsageBarValue and diskUsageBar:
-            diskUsageText.setText(f"{used_disk_usage}GB / {total_disk_usage}GB")
+            diskUsageText.setText(f"{used_disk_usage} GB / {total_disk_usage} GB")
             diskUsageBarValue.setFixedWidth(int((diskUsageBar.width()/100) * float((used_disk_usage/total_disk_usage)*100)))
 
-    def see_more(self):
-        # See more
-        self.btnSeeMore.setVisible(False)
-        self.btnSeeLess.setVisible(True)
-        self.memoryUsage.setVisible(True)
-        self.memoryUsageBar.setVisible(True)
-        self.diskUsage.setVisible(True)
-        self.diskUsageBar.setVisible(True)
-        self.card.setMaximumHeight(255)
+    # See more
+    def see_more(self, client_num=""):
+        btnSeeMore = self.findChild(QPushButton, f'btnSeeMore{client_num}')
+        btnSeeLess = self.findChild(QPushButton, f'btnSeeLess{client_num}')
+        memoryUsage = self.findChild(QFrame, f'memoryUsage{client_num}')
+        memoryUsage = self.findChild(QFrame, f'memoryUsage{client_num}')
+        memoryUsageBar = self.findChild(QFrame, f'memoryUsageBar{client_num}')
+        diskUsage = self.findChild(QFrame, f'diskUsage{client_num}')
+        diskUsageBar = self.findChild(QFrame, f'diskUsageBar{client_num}')
+        card = self.findChild(QFrame, f'card{client_num}')
+
+        btnSeeMore.setVisible(False)
+        btnSeeLess.setVisible(True)
+        memoryUsage.setVisible(True)
+        memoryUsageBar.setVisible(True)
+        diskUsage.setVisible(True)
+        diskUsageBar.setVisible(True)
+        card.setMaximumHeight(255)
+
         self.header.setFocus()
     
-    def see_less(self):
-        # See less
-        self.btnSeeMore.setVisible(True)
-        self.btnSeeLess.setVisible(False)
-        self.memoryUsage.setVisible(False)
-        self.memoryUsageBar.setVisible(False)
-        self.diskUsage.setVisible(False)
-        self.diskUsageBar.setVisible(False)
-        self.card.setMaximumHeight(130)
+    # See less
+    def see_less(self, client_num=""):
+        btnSeeMore = self.findChild(QPushButton, f'btnSeeMore{client_num}')
+        btnSeeLess = self.findChild(QPushButton, f'btnSeeLess{client_num}')
+        memoryUsage = self.findChild(QFrame, f'memoryUsage{client_num}')
+        memoryUsage = self.findChild(QFrame, f'memoryUsage{client_num}')
+        memoryUsageBar = self.findChild(QFrame, f'memoryUsageBar{client_num}')
+        diskUsage = self.findChild(QFrame, f'diskUsage{client_num}')
+        diskUsageBar = self.findChild(QFrame, f'diskUsageBar{client_num}')
+        card = self.findChild(QFrame, f'card{client_num}')
+
+        btnSeeMore.setVisible(True)
+        btnSeeLess.setVisible(False)
+        memoryUsage.setVisible(False)
+        memoryUsageBar.setVisible(False)
+        diskUsage.setVisible(False)
+        diskUsageBar.setVisible(False)
+        card.setMaximumHeight(130)
+
         self.header.setFocus()
 
     def login(self):
@@ -218,23 +246,14 @@ class MainWindow(CustomWindow):
             self.server_thread.signal.disk_data_changed.connect(self.update_client_disk_usage)
             self.server_thread.start()
             
-            self.btnSeeMore.clicked.connect(self.see_more)
-            self.btnSeeLess.clicked.connect(self.see_less)
-
+            self.btnSeeMore.clicked.connect(lambda: self.see_more())
+            self.btnSeeLess.clicked.connect(lambda: self.see_less())
+            
             # See less
-            self.btnSeeMore.setVisible(True)
-            self.btnSeeLess.setVisible(False)
-            self.memoryUsage.setVisible(False)
-            self.memoryUsageBar.setVisible(False)
-            self.diskUsage.setVisible(False)
-            self.diskUsageBar.setVisible(False)
-            self.card.setMaximumHeight(130)
+            self.see_less()
 
             # Set window size for Main
             self.resize(1000, 600)
-            
-            # set focus on header
-            self.header.setFocus()
 
             # center window
             center(self)

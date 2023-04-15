@@ -158,7 +158,7 @@ def create_new_card(self):
     memoryUsageText = QLabel()
     memoryUsageText.setObjectName(f'memoryUsageText{card_num}')
     memoryUsageText.setStyleSheet('QLabel#memoryUsageText' + str(card_num) + '{font-family: "Segoe UI", sans-serif; color: #6a6b70;}')
-    memoryUsageText.setText('0MB / 0MB')
+    memoryUsageText.setText('0 GB / 0 GB')
     memory_usage_layout.addWidget(memoryUsageText, alignment=QtCore.Qt.AlignRight)
 
     # cardContent -> memoryUsageBar
@@ -204,7 +204,7 @@ def create_new_card(self):
     diskUsageText = QLabel()
     diskUsageText.setObjectName(f'diskUsageText{card_num}')
     diskUsageText.setStyleSheet('QLabel#diskUsageText' + str(card_num) + '{font-family: "Segoe UI", sans-serif; color: #6a6b70;}')
-    diskUsageText.setText('0MB / 0MB')
+    diskUsageText.setText('0 GB / 0 GB')
     disk_usage_layout.addWidget(diskUsageText, alignment=QtCore.Qt.AlignRight)
 
     # cardContent -> diskUsageBar
@@ -233,6 +233,13 @@ def create_new_card(self):
     btn_see_more.setStyleSheet('QPushButton#btnSeeMore' + str(card_num) + '{font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: #5568fe; background-color: transparent; padding: 0px; margin-top: 10px;}')
     btn_see_more.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
     card_content_layout.addWidget(btn_see_more, alignment=QtCore.Qt.AlignLeft)
+
+    # cardContent -> btnSeeLess
+    btn_see_less = QPushButton('See less')
+    btn_see_less.setObjectName(f'btnSeeLess{card_num}')
+    btn_see_less.setStyleSheet('QPushButton#btnSeeLess' + str(card_num) + '{font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: #5568fe; background-color: transparent; padding: 0px; margin-top: 10px;}')
+    btn_see_less.setCursor(QCursor(QtCore.Qt.PointingHandCursor))
+    card_content_layout.addWidget(btn_see_less, alignment=QtCore.Qt.AlignLeft)
 
     # # cardContent -> vertical_spacer
     # vertical_spacer = QSpacerItem(20,40, QSizePolicy.Expanding)
