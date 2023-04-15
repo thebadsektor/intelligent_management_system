@@ -14,6 +14,9 @@ class Signal(QObject):
 def handle_client(client_socket, addr, signal, client_num):
     print(f"Client #{client_num} {addr} connected")
 
+    data = json.loads(client_socket.recv(1024).decode('utf-8'))
+    print(f'START: {data}')
+
     with client_socket:
         while True:
             data = json.loads(client_socket.recv(1024).decode('utf-8'))
