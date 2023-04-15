@@ -24,10 +24,10 @@ def connect_to_server(host, port, callback=None):
 
             data = {
                 "cpu_usage": cpu_usage, 
-                "used_memory_usage": used_memory_usage, 
-                "total_memory_usage": total_memory_usage,
-                "used_disk_usage": used_disk_usage,
-                "total_disk_usage": total_disk_usage}
+                "used_memory_usage": round(used_memory_usage / 1024, 2), 
+                "total_memory_usage": round(total_memory_usage / 1024, 2),
+                "used_disk_usage": round(used_disk_usage / 1024, 2),
+                "total_disk_usage": round(total_disk_usage / 1024, 2)}
 
             s.sendall(json.dumps(data).encode('utf-8'))
 

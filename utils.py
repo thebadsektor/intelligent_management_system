@@ -60,7 +60,7 @@ def create_new_card(self):
     # card
     card = QFrame()
     card.setObjectName(f'card{card_num}')
-    card.setStyleSheet('QFrame#card' + str(card_num) + '{border: 1px solid black; border-radius: 10px; background-color: transparent; max-width: 280px; max-height: 180px;}')
+    card.setStyleSheet('QFrame#card' + str(card_num) + '{border: 1px solid black; border-radius: 10px; background-color: transparent; max-width: 280px; max-height: 255px;}')
     card_layout = QVBoxLayout(card)
     card_layout.setSpacing(0)
     card_layout.setContentsMargins(0,0,0,0)
@@ -130,7 +130,7 @@ def create_new_card(self):
     # cpuUsageBar -> cpuUsageValue
     cpu_usage_value = QLabel()
     cpu_usage_value.setObjectName(f'cpuUsageValue{card_num}')
-    cpu_usage_value.setStyleSheet('QLabel#cpuUsageValue' + str(card_num) + '{min-height: 10px; border-radius: 4px; background-color: #5468ff; min-width: 20px;}')
+    cpu_usage_value.setStyleSheet('QLabel#cpuUsageValue' + str(card_num) + '{min-height: 10px; border-radius: 4px; background-color: #5468ff; min-width: 0px;}')
     cpu_usage_bar_layout.addWidget(cpu_usage_value)
 
     # cpuUsageBar -> horizontalSpacer
@@ -141,7 +141,7 @@ def create_new_card(self):
     # cardContent -> memoryUsage
     memory_usage = QFrame()
     memory_usage.setObjectName(f'memoryUsage{card_num}')
-    memory_usage.setStyleSheet('QFrame#memoryUsage' + str(card_num) + '{margin-bottom: 10px;}')
+    memory_usage.setStyleSheet('QFrame#memoryUsage' + str(card_num) + '{margin-top: 10px; margin-bottom: 10px;}')
     memory_usage_layout = QHBoxLayout(memory_usage)
     memory_usage_layout.setSpacing(0)
     memory_usage_layout.setContentsMargins(0,0,0,0)
@@ -158,7 +158,7 @@ def create_new_card(self):
     memoryUsageText = QLabel()
     memoryUsageText.setObjectName(f'memoryUsageText{card_num}')
     memoryUsageText.setStyleSheet('QLabel#memoryUsageText' + str(card_num) + '{font-family: "Segoe UI", sans-serif; color: #6a6b70;}')
-    memoryUsageText.setText('0%')
+    memoryUsageText.setText('0MB / 0MB')
     memory_usage_layout.addWidget(memoryUsageText, alignment=QtCore.Qt.AlignRight)
 
     # cardContent -> memoryUsageBar
@@ -173,13 +173,59 @@ def create_new_card(self):
     # memoryUsageBar -> memoryUsageBarValue
     memory_usage_bar_value = QLabel()
     memory_usage_bar_value.setObjectName(f'memoryUsageBarValue{card_num}')
-    memory_usage_bar_value.setStyleSheet('QLabel#memoryUsageBarValue' + str(card_num) + '{min-height: 10px; border-radius: 4px; background-color: #5468ff; min-width: 20px;}')
+    memory_usage_bar_value.setStyleSheet('QLabel#memoryUsageBarValue' + str(card_num) + '{min-height: 10px; border-radius: 4px; background-color: #5468ff; min-width: 0px;}')
     memory_usage_bar_layout.addWidget(memory_usage_bar_value)
 
     # memoryUsageBar -> horizontalSpacer
     memory_usage_bar_layout.addSpacerItem(QSpacerItem(40,20, QSizePolicy.Expanding))
 
     #### end::Memory Usage ####
+
+
+    #### begin::Disk Usage ####
+
+    # cardContent -> memoryUsage
+    disk_usage = QFrame()
+    disk_usage.setObjectName(f'diskUsage{card_num}')
+    disk_usage.setStyleSheet('QFrame#diskUsage' + str(card_num) + '{margin-top: 10px; margin-bottom: 10px;}')
+    disk_usage_layout = QHBoxLayout(disk_usage)
+    disk_usage_layout.setSpacing(0)
+    disk_usage_layout.setContentsMargins(0,0,0,0)
+    card_content_layout.addWidget(disk_usage)
+
+    # diskUsage -> diskUsageLabel
+    diskUsageLabel = QLabel()
+    diskUsageLabel.setObjectName(f'diskUsageLabel{card_num}')
+    diskUsageLabel.setStyleSheet('QLabel#diskUsageLabel' + str(card_num) + '{font-family: "Segoe UI", sans-serif; font-size: 12px; font-weight: 500; color: white;}')
+    diskUsageLabel.setText('Disk Usage')
+    disk_usage_layout.addWidget(diskUsageLabel)
+
+    # diskUsage -> diskUsageText
+    diskUsageText = QLabel()
+    diskUsageText.setObjectName(f'diskUsageText{card_num}')
+    diskUsageText.setStyleSheet('QLabel#diskUsageText' + str(card_num) + '{font-family: "Segoe UI", sans-serif; color: #6a6b70;}')
+    diskUsageText.setText('0MB / 0MB')
+    disk_usage_layout.addWidget(diskUsageText, alignment=QtCore.Qt.AlignRight)
+
+    # cardContent -> diskUsageBar
+    disk_usage_bar = QFrame()
+    disk_usage_bar.setObjectName(f'diskUsageBar{card_num}')
+    disk_usage_bar.setStyleSheet('QFrame#diskUsageBar' + str(card_num) + '{background-color: #26272D; border-radius: 4px; min-width: 248px; max-width: 248px; min-height: 10px; max-height: 10px;}')
+    disk_usage_bar_layout = QHBoxLayout(disk_usage_bar)
+    disk_usage_bar_layout.setSpacing(0)
+    disk_usage_bar_layout.setContentsMargins(0,0,0,0)
+    card_content_layout.addWidget(disk_usage_bar)
+
+    # diskUsageBar -> diskUsageBarValue
+    disk_usage_bar_value = QLabel()
+    disk_usage_bar_value.setObjectName(f'diskUsageBarValue{card_num}')
+    disk_usage_bar_value.setStyleSheet('QLabel#diskUsageBarValue' + str(card_num) + '{min-height: 10px; border-radius: 4px; background-color: #5468ff; min-width: 0px;}')
+    disk_usage_bar_layout.addWidget(disk_usage_bar_value)
+
+    # diskUsageBar -> horizontalSpacer
+    disk_usage_bar_layout.addSpacerItem(QSpacerItem(40,20, QSizePolicy.Expanding))
+
+    #### end::Disk Usage ####
 
     # cardContent -> btnSeeMore
     btn_see_more = QPushButton('See more')

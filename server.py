@@ -8,8 +8,9 @@ from utils import *
 class Signal(QObject):
     new_client_connected = pyqtSignal()
     hostname_changed = pyqtSignal(int, str)
-    cpu_data_changed = pyqtSignal(int, str)
-    memory_data_changed = pyqtSignal(int, int, int)
+    cpu_data_changed = pyqtSignal(int, float)
+    memory_data_changed = pyqtSignal(int, float, float)
+    disk_data_changed = pyqtSignal(int, float, float)
 
 def handle_client(client_socket, addr, signal, client_num):
     print(f"Client #{client_num} {addr} connected")
@@ -22,9 +23,11 @@ def handle_client(client_socket, addr, signal, client_num):
     with client_socket:
         while True:
             data = json.loads(client_socket.recv(1024).decode('utf-8'))
-
-            signal.cpu_data_changed.emit(client_num, str(data['cpu_usage']))
+            print(data)
+            
+            signal.cpu_data_changed.emit(client_num, data['cpu_usage'])
             signal.memory_data_changed.emit(client_num, data['used_memory_usage'], data['total_memory_usage'])
+            signal.disk_data_changed.emit(client_num, data['used_disk_usage'], data['total_disk_usage'])
 
 
 def start_server(host, port, signal):

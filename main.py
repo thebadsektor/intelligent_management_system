@@ -42,18 +42,18 @@ class LiveUpdateThread(QThread):
 
             # Get memory usage
             memory_usage = monitor.get_memory_usage()
-            available_memory_usage = memory_usage['available']
+            used_memory_usage = memory_usage['used']
             total_memory_usage = memory_usage['total']
 
             # Get disk usage
             disk_usage = monitor.get_disk_usage()
-            available_disk_usage = disk_usage['available']
+            used_disk_usage = disk_usage['used']
             total_disk_usage = disk_usage['total']
             
             # Emit signal with updated data
             self.cpu_data_changed.emit(cpu_usage)
-            self.memory_data_changed.emit(available_memory_usage, total_memory_usage)
-            self.disk_data_changed.emit(available_disk_usage, total_disk_usage)
+            self.memory_data_changed.emit(used_memory_usage, total_memory_usage)
+            self.disk_data_changed.emit(used_disk_usage, total_disk_usage)
             
             # Wait for 1 second before updating again
             time.sleep(1)
@@ -131,13 +131,13 @@ class MainWindow(CustomWindow):
         self.cpuUsageValueText.setText("{:.2f}".format(cpu_usage) + "%")
         self.cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * cpu_usage))
 
-    def update_server_memory_usage(self, available_memory_usage, total_memory_usage):
-        self.memoryUsageText.setText(f"{available_memory_usage}MB / {total_memory_usage}MB")
-        self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (available_memory_usage/total_memory_usage)*100))
+    def update_server_memory_usage(self, used_memory_usage, total_memory_usage):
+        self.memoryUsageText.setText(f"{used_memory_usage}MB / {total_memory_usage}MB")
+        self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (used_memory_usage/total_memory_usage)*100))
 
-    def update_server_disk_usage(self, available_disk_usage, total_disk_usage):
-        self.diskUsageText.setText(f"{available_disk_usage}MB / {total_disk_usage}MB")
-        self.diskUsageBarValue.setFixedWidth(int((self.diskUsageBar.width()/100) * (available_disk_usage/total_disk_usage)*100))
+    def update_server_disk_usage(self, used_disk_usage, total_disk_usage):
+        self.diskUsageText.setText(f"{used_disk_usage}MB / {total_disk_usage}MB")
+        self.diskUsageBarValue.setFixedWidth(int((self.diskUsageBar.width()/100) * (used_disk_usage/total_disk_usage)*100))
 
     # PC CLIENT/S
     def spawn_cards(self):
@@ -151,20 +151,29 @@ class MainWindow(CustomWindow):
     def update_client_cpu_usage(self, client_num, cpu_usage):
         cpuUsageValueText = self.findChild(QLabel, f'cpuUsageValueText{client_num}')
         cpuUsageValue = self.findChild(QLabel, f'cpuUsageValue{client_num}')
-        cpuUsageBar = self.findChild(QLabel, f'cpuUsageBar{client_num}')
+        cpuUsageBar = self.findChild(QFrame, f'cpuUsageBar{client_num}')
 
-        if cpuUsageValueText is not None:
+        if cpuUsageValueText and cpuUsageValue and cpuUsageBar:
             cpuUsageValueText.setText(f"{cpu_usage}%")
-            cpuUsageValue.setFixedWidth(int((self.cpuUsageBar.width()/100) * float(cpu_usage)))
+            cpuUsageValue.setFixedWidth(int((cpuUsageBar.width()/100) * float(cpu_usage)))
 
     def update_client_memory_usage(self, client_num, used_memory_usage, total_memory_usage):
         memoryUsageText = self.findChild(QLabel, f'memoryUsageText{client_num}')
         memoryUsageBarValue = self.findChild(QLabel, f'memoryUsageBarValue{client_num}')
-        memoryUsageBar = self.findChild(QLabel, f'memoryUsageBar{client_num}')
+        memoryUsageBar = self.findChild(QFrame, f'memoryUsageBar{client_num}')
 
-        if memoryUsageText is not None:
-            self.memoryUsageText.setText(f"{used_memory_usage}MB / {total_memory_usage}MB")
-            self.memoryUsageBarValue.setFixedWidth(int((self.memoryUsageBar.width()/100) * (used_memory_usage/total_memory_usage)*100))
+        if memoryUsageText and memoryUsageBarValue and memoryUsageBar:
+            memoryUsageText.setText(f"{used_memory_usage}GB / {total_memory_usage}GB")
+            memoryUsageBarValue.setFixedWidth(int((memoryUsageBar.width()/100) * float((used_memory_usage/total_memory_usage)*100)))
+
+    def update_client_disk_usage(self, client_num, used_disk_usage, total_disk_usage):
+        diskUsageText = self.findChild(QLabel, f'diskUsageText{client_num}')
+        diskUsageBarValue = self.findChild(QLabel, f'diskUsageBarValue{client_num}')
+        diskUsageBar = self.findChild(QFrame, f'diskUsageBar{client_num}')
+
+        if diskUsageText and diskUsageBarValue and diskUsageBar:
+            diskUsageText.setText(f"{used_disk_usage}GB / {total_disk_usage}GB")
+            diskUsageBarValue.setFixedWidth(int((diskUsageBar.width()/100) * float((used_disk_usage/total_disk_usage)*100)))
 
     def see_more(self):
         # See more
@@ -206,6 +215,7 @@ class MainWindow(CustomWindow):
             self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
             self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
             self.server_thread.signal.memory_data_changed.connect(self.update_client_memory_usage)
+            self.server_thread.signal.disk_data_changed.connect(self.update_client_disk_usage)
             self.server_thread.start()
             
             self.btnSeeMore.clicked.connect(self.see_more)
