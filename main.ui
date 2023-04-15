@@ -435,6 +435,9 @@ margin-bottom: 20px;</string>
              <property name="styleSheet">
               <string notr="true">margin-bottom: 15px;</string>
              </property>
+             <property name="text">
+              <string>admin</string>
+             </property>
              <property name="placeholderText">
               <string>Username</string>
              </property>
@@ -444,6 +447,9 @@ margin-bottom: 20px;</string>
             <widget class="QLineEdit" name="txtPassword">
              <property name="styleSheet">
               <string notr="true">margin-bottom: 20px;</string>
+             </property>
+             <property name="text">
+              <string>admin</string>
              </property>
              <property name="placeholderText">
               <string>Password</string>
