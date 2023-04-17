@@ -13,7 +13,7 @@ import resources
 # Import utilities
 from utils import *
 
-from client import connect_to_server, get_cpu_usage
+from client import connect_to_server
 
 class ConnectionThread(QThread):
     data_received = pyqtSignal(str)
@@ -22,9 +22,16 @@ class ConnectionThread(QThread):
         super().__init__()
         self.host = host
         self.port = port
+        self.socket = None
 
     def run(self):
-        connect_to_server(self.host, self.port, callback=self.update_received_data)
+        self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
+        # connect_to_server(self.host, self.port, callback=self.update_received_data)
+
+    def disconnect(self):
+        if self.socket is not None:
+            self.socket.close()
+            self.socket = None
         
     def update_received_data(self, data):
         self.data_received.emit(data)
@@ -109,9 +116,6 @@ class ClientWindow(CustomWindow):
         self.txtServerPort.setStyleSheet('margin-bottom: 15px;')
         self.btnDisconnect.setVisible(False)
         self.btnConnect.setVisible(True)
-
-
-
 
     def display_received_data(self, data):
         print(data)
