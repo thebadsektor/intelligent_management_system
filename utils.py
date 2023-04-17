@@ -90,7 +90,7 @@ def create_new_card(self):
     # card-> cardContent
     card_content = QFrame()
     card_content.setObjectName(f'cardContent{card_num}')
-    card_content.setStyleSheet('QFrame#cardContent' + str(card_num) + '{margin: 15px}')
+    card_content.setStyleSheet('QFrame#cardContent' + str(card_num) + '{padding: 15px; background-color: transparent;}')
     card_content_layout = QVBoxLayout(card_content)
     card_content_layout.setSpacing(0)
     card_content_layout.setContentsMargins(0,0,0,0)

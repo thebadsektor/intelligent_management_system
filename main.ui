@@ -806,7 +806,8 @@ margin-left: 15px;</string>
                <widget class="QFrame" name="cardContent">
                 <property name="styleSheet">
                  <string notr="true">QFrame#cardContent {
-	margin: 15px;
+	padding: 15px;
+	background-color: transparent;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -1034,7 +1035,7 @@ margin-left: 15px;</string>
 </string>
                       </property>
                       <property name="text">
-                       <string>234MB / 500MB</string>
+                       <string>0 GB / 0 GB</string>
                       </property>
                      </widget>
                     </item>
@@ -1171,7 +1172,7 @@ margin-left: 15px;</string>
 </string>
                       </property>
                       <property name="text">
-                       <string>1024MB / 2048MB</string>
+                       <string>0 GB / 0 GB</string>
                       </property>
                      </widget>
                     </item>
