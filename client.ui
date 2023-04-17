@@ -379,7 +379,7 @@ margin-bottom: 20px;</string>
               <string notr="true">margin-bottom: 15px;</string>
              </property>
              <property name="text">
-              <string>192.168.254.198</string>
+              <string/>
              </property>
              <property name="placeholderText">
               <string>Server IP</string>
@@ -392,7 +392,7 @@ margin-bottom: 20px;</string>
               <string notr="true">margin-bottom: 20px;</string>
              </property>
              <property name="text">
-              <string>5000</string>
+              <string/>
              </property>
              <property name="placeholderText">
               <string>Server Port</string>

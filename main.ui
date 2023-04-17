@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>970</width>
-    <height>654</height>
+    <width>803</width>
+    <height>611</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -436,7 +436,7 @@ margin-bottom: 20px;</string>
               <string notr="true">margin-bottom: 15px;</string>
              </property>
              <property name="text">
-              <string>admin</string>
+              <string/>
              </property>
              <property name="placeholderText">
               <string>Username</string>
@@ -449,7 +449,7 @@ margin-bottom: 20px;</string>
               <string notr="true">margin-bottom: 20px;</string>
              </property>
              <property name="text">
-              <string>admin</string>
+              <string/>
              </property>
              <property name="placeholderText">
               <string>Password</string>
@@ -750,8 +750,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>903</width>
-                 <height>608</height>
+                 <width>359</width>
+                 <height>319</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -1448,7 +1448,7 @@ QPushButton {
 	border-radius: 6px;
 	min-height: 40px;
 	max-height: 40px;
-	max-width: 120px;
+	max-width: 220px;
 	font-family: &quot;Segoe UI&quot;, sans-serif;
 	font-weight: 500;
 	font-size: 12px;
@@ -1482,6 +1482,49 @@ QPushButton:hover {
                 <number>0</number>
                </property>
                <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="styleSheet">
+                  <string notr="true">font-family: &quot;Segoe UI&quot;, sans-serif;
+font-size: 12px;
+font-weight: 500;
+color: white;
+background-color: transparent;
+text-align: left;
+margin-bottom: 10px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Server Name</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="txtServerName">
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+	background-color: #26272D;
+	border-radius: 6px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
+	min-height: 40px;
+	max-height: 40px;
+
+	max-width: 180px;
+	
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	color: white;
+	
+	margin-bottom: 20px;
+}</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter name of server</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QLabel" name="label">
                  <property name="styleSheet">
                   <string notr="true">font-family: &quot;Segoe UI&quot;, sans-serif;
@@ -1509,7 +1552,7 @@ margin-bottom: 10px;</string>
 	min-height: 40px;
 	max-height: 40px;
 
-	max-width: 140px;
+	max-width: 180px;
 	
 	font-family: &quot;Segoe UI&quot;, sans-serif;
 	font-size: 12px;
@@ -1533,7 +1576,14 @@ margin-bottom: 10px;</string>
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color: #5468ff;</string>
+                  <string notr="true">QPushButton#btnSave {
+	background-color: #5468ff;
+}
+
+
+QPushButton#btnSave:hover {
+	background-color: #4D5FE8;
+}</string>
                  </property>
                  <property name="text">
                   <string>Save</string>

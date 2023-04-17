@@ -103,46 +103,41 @@ class MainWindow(CustomWindow):
         self.btnLogout.leaveEvent = lambda event: self.hover_left(event, "btnLogout")
         self.btnActivity.clicked.connect(self.open_activity)
         self.btnSettings.clicked.connect(self.open_settings)
+        self.txtServerName.textChanged.connect(self.settings_text_changed)
+        self.txtIdleTime.textChanged.connect(self.settings_text_changed)
+        self.btnSave.clicked.connect(self.settings_save)
 
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
         app.installEventFilter(self)
 
+    # Handle Enter key pressed in login
     def eventFilter(self, obj, event):
         if event.type() == QKeyEvent.KeyPress and event.key() == Qt.Key_Return:
-            # Find the button by searching through the child widgets of the main window
-            for child_widget in self.findChildren(QPushButton):
-                if child_widget.text() == "Login":
-                    # Click the button
-                    child_widget.click()
-                    return True
-        
+            btnLogin = self.findChild(QPushButton, "btnLogin")
+            if btnLogin and btnLogin.isVisible():
+                btnLogin.click()
+                return True
         return super().eventFilter(obj, event)
     
     def open_activity(self):
         self.btnActivity.setIcon(QIcon(':/images/resources/icons_alt/activity.svg'))
         self.btnSettings.setIcon(QIcon(':/images/resources/icons_disabled/settings.svg'))
 
-        # Set server name from settings.json
+        # Read settings.json
+        with open('settings.json') as f:
+            data = json.load(f)
+            server_name = data['server_name']
+            idle_time = int(data['idle_time'])
 
-        # Compile settings.json first
-        # Define the command to run
-        command = ["pyrcc5", "resources.qrc", "-o", "resources.py"]
-
-        # Run the command using subprocess
-        subprocess.run(command, capture_output=True)
-
-        # Open the file as a QFile
-        file = QFile(":/settings/resources/settings.json")
-
-        file.open(QIODevice.ReadOnly | QIODevice.Text)
-        json_data = json.loads(str(file.readAll(), "utf-8"))
-        file.close()
-
-        # Use the JSON data
-        print(json_data)
+        # Set server name
+        self.PC.setText(f'  {server_name}')
 
         # Set threshold
+        monitor.IDLE_THRESHOLD = idle_time
+
+        print(f"Server name: {self.PC.text()} idle time: {monitor.IDLE_THRESHOLD}")
+
         self.stackedWidget2.setCurrentIndex(0)
 
     def open_settings(self): 
@@ -153,19 +148,27 @@ class MainWindow(CustomWindow):
         int_validator = QIntValidator()
         self.txtIdleTime.setValidator(int_validator)
 
-        self.txtIdleTime.textChanged.connect(self.settings_text_changed)
+        # Read settings.json
+        with open('settings.json') as f:
+            data = json.load(f)
+            server_name = data['server_name']
+            idle_time = str(data['idle_time'])
+        
+        # Set server name input
+        self.txtServerName.setText(server_name)
 
-        # Pull value of idle time
-        monitor.IDLE_THRESHOLD = 20
+        # Set idle time input
+        self.txtIdleTime.setText(idle_time)
 
         # Check settings inputs
-        self.check_settings_inputs(self.txtIdleTime.text())
+        self.check_settings_inputs(self.txtServerName.text(), self.txtIdleTime.text())
 
         self.stackedWidget2.setCurrentIndex(1)
 
-    def check_settings_inputs(self, text):
+    def check_settings_inputs(self, server_name_text, idle_time_text):
         # If no input
-        if not text:
+        if not server_name_text or not idle_time_text:
+            print('disabled')
             self.btnSave.setEnabled(False)
             self.btnSave.setStyleSheet('background: #4E5BBC')
         # Has input
@@ -174,8 +177,31 @@ class MainWindow(CustomWindow):
             self.btnSave.setStyleSheet('background: #5468ff')
 
     def settings_text_changed(self):
-        text = self.txtIdleTime.text().strip()
-        self.check_settings_inputs(text)
+        server_name_text = self.txtServerName.text().strip()
+        idle_time_text = self.txtIdleTime.text().strip()
+        self.check_settings_inputs(server_name_text, idle_time_text)
+
+    def settings_save(self):
+        # Load the data from the file
+        with open('settings.json') as f:
+            data = json.load(f)
+
+        # Update the settings.json values
+        data['server_name'] = self.txtServerName.text()
+        data['idle_time'] = int(self.txtIdleTime.text())
+
+        # Write the updated data back to the file
+        with open('settings.json', 'w') as f:
+            json.dump(data, f)
+
+        # Create a message box object
+        msgBox = QMessageBox()
+        msgBox.setText("Settings has been updated")
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.addButton(QMessageBox.Ok)
+        msgBox.setWindowTitle("Settings")
+        msgBox.setFixedWidth(400)
+        response = msgBox.exec_()
 
     def hover_entered(self, event, btn_name):
         if btn_name == 'btnActivity':

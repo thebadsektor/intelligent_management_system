@@ -63,30 +63,60 @@ class ClientWindow(CustomWindow):
         self.btnClose.clicked.connect(self.close)
         self.btnConnect.clicked.connect(self.start_client)
         self.btnDisconnect.clicked.connect(self.stop_client)
+        self.txtServerIP.textChanged.connect(self.client_text_changed)
+        self.txtServerPort.textChanged.connect(self.client_text_changed)
+
+        # Check client inputs
+        self.check_client_inputs(self.txtServerIP.text(), self.txtServerPort.text())
+
+        # only allow numbers in txtServerPort
+        int_validator = QIntValidator()
+        self.txtServerPort.setValidator(int_validator)
 
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
         app.installEventFilter(self)
 
+    # Handle Enter key pressed in connect
     def eventFilter(self, obj, event):
         if event.type() == QKeyEvent.KeyPress and event.key() == Qt.Key_Return:
-            # Find the button by searching through the child widgets of the main window
-            btnConnect = self.findChild(QPushButton, "btnConnnect")
-            for child_widget in self.findChildren(QPushButton):
-                if child_widget.text() == "Connect" and btnConnect.isVisible() :
-                    # Click the button
-                    child_widget.click()
-                    return True
-        
+            btnConnect = self.findChild(QPushButton, "btnConnect")
+            if btnConnect and btnConnect.isVisible():
+                btnConnect.click()
+                return True
         return super().eventFilter(obj, event)
     
+    def check_client_inputs(self, server_ip_text, server_port_text):
+        # If no inputs
+        if not server_ip_text or not server_port_text:
+            print('disabled')
+            self.btnConnect.setEnabled(False)
+            self.btnConnect.setStyleSheet('background-color: #4E5BBC')
+        # Has input
+        else:
+            self.btnConnect.setEnabled(True)
+            self.btnConnect.setStyleSheet('background-color: #5468ff')
+
+    def client_text_changed(self):
+        server_ip_text = self.txtServerIP.text().strip()
+        server_port_text = self.txtServerPort.text().strip()
+
+        # Ensure that the text in txtServerIP consists only of numbers and periods
+        if not all(char.isdigit() or char == '.' for char in server_ip_text):
+            server_ip_text = ''.join(char for char in server_ip_text if char.isdigit() or char == '.')
+
+        # Update txtServerIP
+        self.txtServerIP.setText(server_ip_text)
+
+        self.check_client_inputs(server_ip_text, server_port_text)
+        
     def start_client(self):
         host = self.txtServerIP.text()
         port = int(self.txtServerPort.text())
         self.connection_thread = ConnectionThread(host, port)
         self.connection_thread.data_received.connect(self.display_received_data)
         self.connection_thread.start()
-
+        
         # Changes in UI
         self.txtTitle.setText('Connected')
         self.txtServerIP.setEnabled(False)

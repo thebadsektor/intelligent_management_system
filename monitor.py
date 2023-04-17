@@ -15,8 +15,8 @@ def get_os_info():
         'version': platform.version()
     }
 
-# Define the idle threshold (in seconds)
-IDLE_THRESHOLD = 10
+# Idle time will be pulled from settings.json
+IDLE_THRESHOLD = 0
 
 # Define a function to get the idle time in seconds
 def get_idle_time():
