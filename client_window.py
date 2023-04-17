@@ -98,8 +98,9 @@ class ClientWindow(CustomWindow):
         self.btnDisconnect.setVisible(True)
 
 
-    def disconnect_client(self): 
-        disconnect_from_server(self.connection_thread.socket)
+    def disconnect_client(self):
+        if self.connection_thread and self.connection_thread.socket:
+            disconnect_from_server(self.connection_thread.socket) 
 
         # Changes in UI
         self.txtTitle.setText('Connect to Server')
