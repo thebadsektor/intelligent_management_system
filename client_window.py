@@ -87,7 +87,7 @@ class ClientWindow(CustomWindow):
         self.connection_thread.data_received.connect(self.display_received_data)
         self.connection_thread.start()
 
-        self.connection_thread.finished.connect(self.stop_client)
+        # self.connection_thread.finished.connect(self.stop_client)
 
         # Changes in UI
         self.txtTitle.setText('Connected')

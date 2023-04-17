@@ -36,8 +36,8 @@ def handle_client(client_socket, addr, signal, client_num):
             signal.memory_data_changed.emit(client_num, data['used_memory_usage'], data['total_memory_usage'])
             signal.disk_data_changed.emit(client_num, data['used_disk_usage'], data['total_disk_usage'])
 
-        # emit remove_client signal when client socket is closed
-        signal.remove_client.emit(client_num)
+    # emit remove_client signal when client socket is closed
+    signal.remove_client.emit(client_num)
 
 def start_server(host, port, signal):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
