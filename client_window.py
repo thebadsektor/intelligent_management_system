@@ -62,7 +62,7 @@ class ClientWindow(CustomWindow):
         self.btnMaximize.clicked.connect(self.toggleMaximized)
         self.btnClose.clicked.connect(self.close)
         self.btnConnect.clicked.connect(self.start_client)
-        self.btnDisconnect.clicked.connect(self.disconnect_client)
+        self.btnDisconnect.clicked.connect(self.stop_client)
 
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
