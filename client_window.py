@@ -13,7 +13,7 @@ import resources
 # Import utilities
 from utils import *
 
-from client import connect_to_server, disconnect_from_server
+from client import connect_to_server
 
 class ConnectionThread(QThread):
     data_received = pyqtSignal(str)
