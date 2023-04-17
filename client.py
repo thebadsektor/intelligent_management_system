@@ -1,7 +1,7 @@
 import json
 import socket
 import time
-from monitor import get_network_info, get_os_info, get_cpu_usage, get_memory_usage, get_disk_usage
+from monitor import *
 
 def connect_to_server(host, port, callback=None):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -12,12 +12,26 @@ def connect_to_server(host, port, callback=None):
         system_info = {"network_info": network_info, "os_info": os_info}
         s.sendall(json.dumps(system_info).encode('utf-8'))
 
+        # Initialize the idle timer
+        idle_time = 0
+
         while True:
             cpu_usage = get_cpu_usage()
             used_memory_usage = get_memory_usage()['used']
             total_memory_usage = get_memory_usage()['total']
             used_disk_usage = get_disk_usage()['used']
             total_disk_usage = get_disk_usage()['total']
+
+            # Update the idle timer
+            if cpu_usage < 10:
+                idle_time += 1
+            else:
+                idle_time = 0
+
+            # If the idle timer exceeds the threshold, shut down the system
+            if idle_time >= IDLE_THRESHOLD:
+                shutdown_system()
+                break
 
             if callback is not None:
                 callback(f"Client {network_info['hostname']} - {network_info['ip_address']} : {cpu_usage}%")

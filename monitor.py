@@ -15,6 +15,20 @@ def get_os_info():
         'version': platform.version()
     }
 
+# Define the idle threshold (in seconds)
+IDLE_THRESHOLD = 5
+
+# Define a function to get the idle time in seconds
+def get_idle_time():
+    return (psutil.cpu_times().idle + psutil.cpu_times().iowait)
+
+# Define a function to send the shutdown command to the OS
+def shutdown_system():
+    if os.name == "posix":
+        os.system("sudo shutdown -h now")
+    elif os.name == "nt":
+        os.system("shutdown /s /t 0")
+
 def get_cpu_usage():
     return psutil.cpu_percent(interval=1)
 
