@@ -55,7 +55,6 @@ def connect_to_server(host, port, callback=None):
             time.sleep(1)
 
 def disconnect_from_server(s):
-    s.shutdown(socket.SHUT_RDWR)
     s.close()
         
 
