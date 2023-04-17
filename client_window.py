@@ -42,6 +42,9 @@ class ClientWindow(CustomWindow):
         # center window
         center(self)
 
+        # Hide disconnect button
+        self.btnDisconnect.setVisible(False)
+
         # Initialize mouse_pos attribute
         self.mouse_pos = None
 

@@ -283,6 +283,10 @@ QPushButton {
 	color: white;
 }
 
+QPushButton:hover {
+	opacity: 0.6;
+}
+
 QLineEdit {
 	background-color: #26272D;
 	border-radius: 12px;
@@ -402,7 +406,10 @@ margin-bottom: 20px;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#btnConnect {
-	margin-bottom: 30px;
+}
+
+QPushButton#btnConnect:hover {
+	background-color: #4D5FE8;
 }</string>
              </property>
              <property name="text">
@@ -412,10 +419,16 @@ margin-bottom: 20px;</string>
            </item>
            <item>
             <widget class="QPushButton" name="btnDisconnect">
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton#btnDisconnect {
 	background-color: #FF5454;
-	margin-bottom: 30px;
+}
+
+QPushButton#btnDisconnect:hover {
+	background-color: #E04E4E;
 }</string>
              </property>
              <property name="text">
@@ -435,6 +448,7 @@ margin-bottom: 20px;</string>
 	border-radius: 10px;
 	padding: 10px;
 	max-height: 100px;
+	margin-top: 30px;
 }</string>
              </property>
              <property name="plainText">

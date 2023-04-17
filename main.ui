@@ -462,7 +462,9 @@ margin-bottom: 20px;</string>
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">QPushButton#btnLogin:hover {
+	background-color: #4D5FE8;
+}</string>
              </property>
              <property name="text">
               <string>Login</string>
@@ -723,8 +725,8 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>903</width>
-             <height>608</height>
+             <width>359</width>
+             <height>319</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_4">
