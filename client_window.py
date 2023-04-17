@@ -22,10 +22,9 @@ class ConnectionThread(QThread):
         super().__init__()
         self.host = host
         self.port = port
-        self.socket = None
 
     def run(self):
-        self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
+        connect_to_server(self.host, self.port, callback=self.update_received_data)
         
     def update_received_data(self, data):
         self.data_received.emit(data)
@@ -98,9 +97,11 @@ class ClientWindow(CustomWindow):
         self.btnDisconnect.setVisible(True)
 
 
-    def disconnect_client(self):
-        if self.connection_thread and self.connection_thread.socket:
-            disconnect_from_server(self.connection_thread.socket) 
+    def stop_client(self):
+        if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
+            self.connection_thread.terminate()
+            self.connection_thread.wait()
+            del self.connection_thread
 
         # Changes in UI
         self.txtTitle.setText('Connect to Server')
