@@ -30,8 +30,13 @@ def connect_to_server(host, port, callback=None):
 
             # If the idle timer exceeds the threshold, shut down the system
             if idle_time >= IDLE_THRESHOLD:
-                shutdown_system()
-                break
+                choice = input("System has been idle for too long. Do you want to shut it down? [y/n]: ")
+                if choice.lower() == 'y':
+                    shutdown_system()
+                    break
+                else:
+                    # Reset the idle timer if the user chooses not to shut down the system
+                    idle_time = 0
 
             if callback is not None:
                 callback(f"Client {network_info['hostname']} - {network_info['ip_address']} : {cpu_usage}%")
