@@ -250,8 +250,7 @@ def create_new_card(self):
     card_layout.addWidget(card_content)
 
     # add the new card to cards
-    if card_num <= 6:
-        row, col = divmod(card_num - 1, 3)
-        cards_layout.addWidget(card, row, col, alignment=QtCore.Qt.AlignTop)
+    row, col = divmod(card_num - 1, 3)
+    cards_layout.addWidget(card, row, col, alignment=QtCore.Qt.AlignTop)
 
 

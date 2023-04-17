@@ -7,6 +7,7 @@ from utils import *
 
 class Signal(QObject):
     new_client_connected = pyqtSignal(int)
+    remove_client = pyqtSignal(int)
     hostname_changed = pyqtSignal(int, str)
     cpu_data_changed = pyqtSignal(int, str)
     memory_data_changed = pyqtSignal(int, float, float)
@@ -26,8 +27,9 @@ def handle_client(client_socket, addr, signal, client_num):
             print(data)
 
             # Check if the action is to shutdown the client
-            if 'action' in data and data['action'] == 'shutdown_client':
+            if 'action' in data and data['action'] == 'shutdown':
                 print(f"Shutting down client for Client #{client_num}")
+                signal.remove_client.emit(client_num)
                 break
             
             signal.cpu_data_changed.emit(client_num, data['cpu_usage'])

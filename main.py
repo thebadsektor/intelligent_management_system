@@ -143,6 +143,8 @@ class MainWindow(CustomWindow):
     def spawn_cards(self, client_num):
         create_new_card(self)
 
+        self.scrollArea.setMinimumWidth(self.cards.minimumSizeHint().width())
+
         btnSeeMore = self.findChild(QPushButton, f'btnSeeMore{client_num}')
         btnSeeLess = self.findChild(QPushButton, f'btnSeeLess{client_num}')
 
@@ -150,6 +152,14 @@ class MainWindow(CustomWindow):
         btnSeeLess.clicked.connect(lambda: self.see_less(client_num))
 
         self.see_less(client_num)
+
+    def remove_card(self, client_num):
+        card = self.findChild(QFrame, f'card{client_num}')
+        cards_layout = self.cards.layout()
+        cards_layout.removeWidget(card)
+
+        self.scrollArea.setMinimumWidth(self.cards.minimumSizeHint().width())
+
     
     def update_client_hostname(self, client_num, hostname):
         pc = self.findChild(QPushButton, f'pc{client_num}')
@@ -240,11 +250,14 @@ class MainWindow(CustomWindow):
 
             self.server_thread = ServerThread('0.0.0.0', 5000, Signal())
             self.server_thread.signal.new_client_connected.connect(self.spawn_cards)
+            self.server_thread.signal.remove_client.connect(self.remove_card)
             self.server_thread.signal.hostname_changed.connect(self.update_client_hostname)
             self.server_thread.signal.cpu_data_changed.connect(self.update_client_cpu_usage)
             self.server_thread.signal.memory_data_changed.connect(self.update_client_memory_usage)
             self.server_thread.signal.disk_data_changed.connect(self.update_client_disk_usage)
             self.server_thread.start()
+
+            self.scrollArea.setMinimumWidth(self.cards.minimumSizeHint().width())
             
             self.btnSeeMore.clicked.connect(lambda: self.see_more())
             self.btnSeeLess.clicked.connect(lambda: self.see_less())
