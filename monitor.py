@@ -16,7 +16,7 @@ def get_os_info():
     }
 
 # Define the idle threshold (in seconds)
-IDLE_THRESHOLD = 5
+IDLE_THRESHOLD = 10
 
 # Define a function to get the idle time in seconds
 def get_idle_time():

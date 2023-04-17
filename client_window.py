@@ -58,9 +58,8 @@ class ClientWindow(CustomWindow):
         self.btnMinimize.clicked.connect(self.showMinimized)
         self.btnMaximize.clicked.connect(self.toggleMaximized)
         self.btnClose.clicked.connect(self.close)
-
-        # Connect button to start_client function
         self.btnConnect.clicked.connect(self.start_client)
+        self.btnDisconnect.clicked.connect(self.disconnect_client)
 
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
@@ -87,12 +86,28 @@ class ClientWindow(CustomWindow):
         # Changes in UI
         self.txtTitle.setText('Connected')
         self.txtServerIP.setEnabled(False)
-        self.txtServerIP.setStyleSheet('margin-bottom: 20px; background-color: #22242C;')
+        self.txtServerIP.setStyleSheet('margin-bottom: 15px; background-color: #22242C;')
         self.txtServerPort.setEnabled(False)
         self.txtServerPort.setStyleSheet('margin-bottom: 15px; background-color: #22242C;')
-        self.btnConnect.setEnabled(False)
-        self.btnConnect.setText('Connected')
-        self.btnConnect.setStyleSheet('margin-bottom: 30px; background-color: #4859D6;')
+        self.btnConnect.setVisible(False)
+        self.btnDisconnect.setVisible(True)
+
+
+    def disconnect_client(self): 
+        if self.connection_thread is not None:
+            self.connection_thread.disconnect()
+            self.connection_thread = None
+
+        # Changes in UI
+        self.txtTitle.setText('Connect to Server')
+        self.txtServerIP.setEnabled(True)
+        self.txtServerIP.setStyleSheet('margin-bottom: 15px;')
+        self.txtServerPort.setEnabled(True)
+        self.txtServerPort.setStyleSheet('margin-bottom: 15px;')
+        self.btnDisconnect.setVisible(False)
+        self.btnConnect.setVisible(True)
+
+
 
 
     def display_received_data(self, data):

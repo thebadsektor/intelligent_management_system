@@ -411,6 +411,19 @@ margin-bottom: 20px;</string>
             </widget>
            </item>
            <item>
+            <widget class="QPushButton" name="btnDisconnect">
+             <property name="styleSheet">
+              <string notr="true">QPushButton#btnDisconnect {
+	background-color: #FF5454;
+	margin-bottom: 30px;
+}</string>
+             </property>
+             <property name="text">
+              <string>Disconnect</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPlainTextEdit" name="txtReceivedData">
              <property name="styleSheet">
               <string notr="true">QPlainTextEdit#txtReceivedData {
