@@ -54,10 +54,6 @@ def connect_to_server(host, port, callback=None):
             # Wait every 1 second before sending again
             time.sleep(1)
 
-def disconnect_from_server(s):
-    s.close()
-        
-
 if __name__ == '__main__':
     host = 'YOUR_SERVER_IP_ADDRESS'
     port = 5000

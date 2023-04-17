@@ -63,6 +63,8 @@ class ClientWindow(CustomWindow):
         self.btnClose.clicked.connect(self.close)
         self.btnConnect.clicked.connect(self.start_client)
         self.btnDisconnect.clicked.connect(self.stop_client)
+        self.connection_thread.finished.connect(self.stop_client)
+
 
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
