@@ -53,6 +53,10 @@ def connect_to_server(host, port, callback=None):
 
             # Wait every 1 second before sending again
             time.sleep(1)
+
+def disconnect_from_server(s):
+    s.shutdown(socket.SHUT_RDWR)
+    s.close()
         
 
 if __name__ == '__main__':
