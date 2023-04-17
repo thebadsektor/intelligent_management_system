@@ -5,6 +5,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets, uic
 import time
 from server import start_server, Signal
+import json
+import subprocess
 
 # Import resources
 import resources
@@ -93,10 +95,14 @@ class MainWindow(CustomWindow):
         self.btnClose.clicked.connect(self.close)
         self.btnLogin.clicked.connect(self.login)
         self.btnLogout.clicked.connect(self.logout)
+        self.btnActivity.enterEvent = lambda event: self.hover_entered(event, "btnActivity")
+        self.btnActivity.leaveEvent = lambda event: self.hover_left(event, "btnActivity")
         self.btnSettings.enterEvent = lambda event: self.hover_entered(event, "btnSettings")
         self.btnSettings.leaveEvent = lambda event: self.hover_left(event, "btnSettings")
         self.btnLogout.enterEvent = lambda event: self.hover_entered(event, "btnLogout")
         self.btnLogout.leaveEvent = lambda event: self.hover_left(event, "btnLogout")
+        self.btnActivity.clicked.connect(self.open_activity)
+        self.btnSettings.clicked.connect(self.open_settings)
 
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
@@ -113,16 +119,83 @@ class MainWindow(CustomWindow):
         
         return super().eventFilter(obj, event)
     
+    def open_activity(self):
+        self.btnActivity.setIcon(QIcon(':/images/resources/icons_alt/activity.svg'))
+        self.btnSettings.setIcon(QIcon(':/images/resources/icons_disabled/settings.svg'))
+
+        # Set server name from settings.json
+
+        # Compile settings.json first
+        # Define the command to run
+        command = ["pyrcc5", "resources.qrc", "-o", "resources.py"]
+
+        # Run the command using subprocess
+        subprocess.run(command, capture_output=True)
+
+        # Open the file as a QFile
+        file = QFile(":/settings/resources/settings.json")
+
+        file.open(QIODevice.ReadOnly | QIODevice.Text)
+        json_data = json.loads(str(file.readAll(), "utf-8"))
+        file.close()
+
+        # Use the JSON data
+        print(json_data)
+
+        # Set threshold
+        self.stackedWidget2.setCurrentIndex(0)
+
+    def open_settings(self): 
+        self.btnSettings.setIcon(QIcon(':/images/resources/icons_alt/settings.svg'))
+        self.btnActivity.setIcon(QIcon(':/images/resources/icons_disabled/activity.svg'))
+
+        # only allow numbers in txtIdleTimes
+        int_validator = QIntValidator()
+        self.txtIdleTime.setValidator(int_validator)
+
+        self.txtIdleTime.textChanged.connect(self.settings_text_changed)
+
+        # Pull value of idle time
+        monitor.IDLE_THRESHOLD = 20
+
+        # Check settings inputs
+        self.check_settings_inputs(self.txtIdleTime.text())
+
+        self.stackedWidget2.setCurrentIndex(1)
+
+    def check_settings_inputs(self, text):
+        # If no input
+        if not text:
+            self.btnSave.setEnabled(False)
+            self.btnSave.setStyleSheet('background: #4E5BBC')
+        # Has input
+        else:
+            self.btnSave.setEnabled(True)
+            self.btnSave.setStyleSheet('background: #5468ff')
+
+    def settings_text_changed(self):
+        text = self.txtIdleTime.text().strip()
+        self.check_settings_inputs(text)
 
     def hover_entered(self, event, btn_name):
-        if btn_name == 'btnSettings':
+        if btn_name == 'btnActivity':
+            self.btnActivity.setIcon(QIcon(':/images/resources/icons_alt/activity.svg'))
+        elif btn_name == 'btnSettings':
             self.btnSettings.setIcon(QIcon(':/images/resources/icons_alt/settings.svg'))
         elif btn_name == 'btnLogout':
             self.btnLogout.setIcon(QIcon(':/images/resources/icons_alt/power.svg'))
 
     def hover_left(self, event, btn_name):
-        if btn_name == 'btnSettings':
-            self.btnSettings.setIcon(QIcon(':/images/resources/icons_disabled/settings.svg'))
+        if btn_name == "btnActivity":
+            if self.stackedWidget2.currentIndex() == 0:
+                self.btnActivity.setIcon(QIcon(':/images/resources/icons_alt/activity.svg'))
+            else:
+                self.btnActivity.setIcon(QIcon(':/images/resources/icons_disabled/activity.svg'))
+        elif btn_name == 'btnSettings':
+            if self.stackedWidget2.currentIndex() == 1:
+                self.btnSettings.setIcon(QIcon(':/images/resources/icons_alt/settings.svg'))
+            else:
+                self.btnSettings.setIcon(QIcon(':/images/resources/icons_disabled/settings.svg'))
         elif btn_name == 'btnLogout':
             self.btnLogout.setIcon(QIcon(':/images/resources/icons_disabled/power.svg'))
 
@@ -270,7 +343,12 @@ class MainWindow(CustomWindow):
 
             # center window
             center(self)
+
+            # switch to main page
             self.stackedWidget.setCurrentIndex(1)  # Switch to the main page
+
+            # switch to activity page
+            self.open_activity()
         else:
             QtWidgets.QMessageBox.warning(self, 'Error', 'Invalid username or password.')
 
