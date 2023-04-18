@@ -5,7 +5,7 @@ from monitor import *
 
 # Set constants
 IDLE_TIME_THRESHOLD = 10
-CPU_USAGE_IDLE_THRESHOLD = 10
+CPU_USAGE_IDLE_THRESHOLD = 5
 
 def connect_to_server(s, callback=None):
     network_info = get_network_info()
