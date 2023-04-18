@@ -57,7 +57,7 @@ def create_new_card(self, client_num):
     cards_layout = self.cards.layout()
 
     # card number
-    # card_num = cards_layout.count() + 1
+    number_of_cards = cards_layout.count() + 1
     card_num = client_num
     print(f'card_num is {card_num}')
 
@@ -254,7 +254,7 @@ def create_new_card(self, client_num):
     card_layout.addWidget(card_content)
 
     # add the new card to cards
-    row, col = divmod(card_num - 1, 3)
+    row, col = divmod(number_of_cards - 1, 3)
     cards_layout.addWidget(card, row, col, alignment=QtCore.Qt.AlignTop)
 
 
