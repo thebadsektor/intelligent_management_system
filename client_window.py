@@ -32,12 +32,14 @@ class ConnectionThread(QThread):
         self.connected = True
 
     def send_message(self, message):
-        if self.connected:
-            print('Message sent')
-            data = json.dumps({'message': message}).encode('utf-8')
-            self.socket.sendall(data)
-        else:
-            print("Socket is not connected.")
+        while self.socket is None:
+            time.sleep(0.1)
+        print('Message sent')
+        data = json.dumps({'message': message}).encode('utf-8')
+        self.socket.sendall(data)
+
+        # else:
+        #     print("Socket is not connected.")
         
     def update_received_data(self, data):
         self.data_received.emit(data)
