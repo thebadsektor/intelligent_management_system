@@ -33,6 +33,7 @@ class ConnectionThread(QThread):
 
     def send_message(self, message):
         if self.connected:
+            print('Message sent')
             data = json.dumps({'message': message}).encode('utf-8')
             self.socket.sendall(data)
         else:
