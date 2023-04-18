@@ -1,5 +1,4 @@
 import json
-import socket
 import time
 from monitor import *
 
@@ -11,7 +10,6 @@ def connect_to_server(s, callback=None):
     network_info = get_network_info()
     os_info = get_os_info()
     system_info = {"network_info": network_info, "os_info": os_info}
-    print(system_info)
     s.sendall(json.dumps(system_info).encode('utf-8'))
 
     # Initialize the idle timer
@@ -45,7 +43,8 @@ def connect_to_server(s, callback=None):
             "used_memory_usage": round(used_memory_usage / 1024, 2), 
             "total_memory_usage": round(total_memory_usage / 1024, 2),
             "used_disk_usage": round(used_disk_usage / 1024, 2),
-            "total_disk_usage": round(total_disk_usage / 1024, 2)}
+            "total_disk_usage": round(total_disk_usage / 1024, 2)
+            }
 
         s.sendall(json.dumps(data).encode('utf-8'))
 
