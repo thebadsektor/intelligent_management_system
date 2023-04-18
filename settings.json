@@ -1,1 +1,1 @@
-{"server_name": "SERVER", "idle_time": 10}
+{"server_name": "SERVER", "idle_time": 10, "cpu_usage_idle_threshold": 10}

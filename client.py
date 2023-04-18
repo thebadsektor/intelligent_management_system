@@ -23,7 +23,7 @@ def connect_to_server(host, port, callback=None):
             total_disk_usage = get_disk_usage()['total']
 
             # Update the idle timer
-            if cpu_usage < 10:
+            if cpu_usage < CPU_USAGE_IDLE_THRESHOLD:
                 idle_time += 1
             else:
                 idle_time = 0
