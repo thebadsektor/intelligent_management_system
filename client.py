@@ -4,7 +4,7 @@ import time
 from monitor import *
 
 # Set constants
-IDLE_TIME_THRESHOLD = 300 # 5 minutes
+IDLE_TIME_THRESHOLD = 5 # 5 minutes
 CPU_USAGE_IDLE_THRESHOLD = 10 # 10%
 
 def connect_to_server(s, callback=None):
