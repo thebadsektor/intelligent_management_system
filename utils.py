@@ -262,15 +262,22 @@ def set_from_settings(self):
     with open('settings.json') as f:
         data = json.load(f)
         server_name = data['server_name']
+        username = data['username']
+        password = data['password']
 
         # Set server name
         self.PC.setText(f'  {server_name}')
+        return username, password
 
 def set_settings_inputs(self):
     with open('settings.json') as f:
         data = json.load(f)
         server_name = data['server_name']
+        username = data['username']
+        password = data['password']
     
-    # Set server name input
+    # Set settings inputs
     self.txtServerName.setText(server_name)
+    self.txtUsernameSettings.setText(username)
+    self.txtPasswordSettings.setText(password)
 

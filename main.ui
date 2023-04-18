@@ -1516,11 +1516,100 @@ margin-bottom: 10px;</string>
 	font-weight: 400;
 	color: white;
 	
-	margin-bottom: 30px;
+	margin-bottom: 20px;
 }</string>
                  </property>
                  <property name="placeholderText">
                   <string>Enter name of server</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="styleSheet">
+                  <string notr="true">font-family: &quot;Segoe UI&quot;, sans-serif;
+font-size: 12px;
+font-weight: 500;
+color: white;
+background-color: transparent;
+text-align: left;
+margin-bottom: 10px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Username</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="txtUsernameSettings">
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+	background-color: #26272D;
+	border-radius: 6px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
+	min-height: 40px;
+	max-height: 40px;
+
+	max-width: 180px;
+	
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	color: white;
+	
+	margin-bottom: 20px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter username</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="styleSheet">
+                  <string notr="true">font-family: &quot;Segoe UI&quot;, sans-serif;
+font-size: 12px;
+font-weight: 500;
+color: white;
+background-color: transparent;
+text-align: left;
+margin-bottom: 10px;</string>
+                 </property>
+                 <property name="text">
+                  <string>Password</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="txtPasswordSettings">
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+	background-color: #26272D;
+	border-radius: 6px;
+	padding-left: 20px;
+	padding-right: 20px;
+	
+	min-height: 40px;
+	max-height: 40px;
+
+	max-width: 180px;
+	
+	font-family: &quot;Segoe UI&quot;, sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	color: white;
+	
+	margin-bottom: 30px;
+}</string>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Enter password</string>
                  </property>
                 </widget>
                </item>

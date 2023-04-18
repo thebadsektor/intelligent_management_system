@@ -4,8 +4,8 @@ import time
 from monitor import *
 
 # Set constants
-IDLE_TIME_THRESHOLD = 10
-CPU_USAGE_IDLE_THRESHOLD = 5
+IDLE_TIME_THRESHOLD = 300 # 5 minutes
+CPU_USAGE_IDLE_THRESHOLD = 10 # 10%
 
 def connect_to_server(s, callback=None):
     network_info = get_network_info()
@@ -33,12 +33,8 @@ def connect_to_server(s, callback=None):
         if idle_time >= IDLE_TIME_THRESHOLD:
             print("Client will shutdown...")
             s.sendall(json.dumps({"action": "shutdown"}).encode('utf-8'))
-            choice = input("System has been idle for too long. Do you want to shut it down? [y/n]: ")
-            if choice.lower() == 'y':
-                shutdown_system()
-                break
-            else: 
-                idle_time = 0
+            shutdown_system()
+            break
 
         if callback is not None:
             callback(f"Client {network_info['hostname']} - {network_info['ip_address']} : {cpu_usage}%")

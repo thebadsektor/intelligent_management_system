@@ -104,6 +104,8 @@ class MainWindow(CustomWindow):
         self.btnActivity.clicked.connect(self.open_activity)
         self.btnSettings.clicked.connect(self.open_settings)
         self.txtServerName.textChanged.connect(self.settings_text_changed)
+        self.txtUsernameSettings.textChanged.connect(self.settings_text_changed)
+        self.txtPasswordSettings.textChanged.connect(self.settings_text_changed)
         self.btnSave.clicked.connect(self.settings_save)
 
         # Install an event filter on the application to intercept key events
@@ -132,22 +134,17 @@ class MainWindow(CustomWindow):
         self.btnSettings.setIcon(QIcon(':/images/resources/icons_alt/settings.svg'))
         self.btnActivity.setIcon(QIcon(':/images/resources/icons_disabled/activity.svg'))
 
-        # # only allow numbers in txtIdleTimes and txtCpuUsageIdleThreshold
-        # int_validator = QIntValidator()
-        # self.txtIdleTime.setValidator(int_validator)
-        # self.txtCpuUsageIdleThreshold.setValidator(int_validator)
-
         # Set settings inputs
         set_settings_inputs(self)
 
         # Check settings inputs
-        self.check_settings_inputs(self.txtServerName.text())
+        self.check_settings_inputs(self.txtServerName.text(), self.txtUsernameSettings.text(), self.txtPasswordSettings.text())
 
         self.stackedWidget2.setCurrentIndex(1)
 
-    def check_settings_inputs(self, server_name_text):
+    def check_settings_inputs(self, server_name_text, username_text, password_text):
         # If no input
-        if not server_name_text:
+        if not server_name_text or not username_text or not password_text:
             print('disabled')
             self.btnSave.setEnabled(False)
             self.btnSave.setStyleSheet('background: #4E5BBC')
@@ -158,7 +155,9 @@ class MainWindow(CustomWindow):
 
     def settings_text_changed(self):
         server_name_text = self.txtServerName.text().strip()
-        self.check_settings_inputs(server_name_text)
+        username_text = self.txtUsernameSettings.text().strip()
+        password_text = self.txtPasswordSettings.text().strip()
+        self.check_settings_inputs(server_name_text, username_text, password_text)
 
     def settings_save(self):
         # Load the data from the file
@@ -167,6 +166,8 @@ class MainWindow(CustomWindow):
 
         # Update the settings.json values
         data['server_name'] = self.txtServerName.text()
+        data['username'] = self.txtUsernameSettings.text()
+        data['password'] = self.txtPasswordSettings.text()
 
         # Write the updated data back to the file
         with open('settings.json', 'w') as f:
@@ -316,8 +317,11 @@ class MainWindow(CustomWindow):
         username = self.txtUsername.text()
         password = self.txtPassword.text()
 
+        # Get stored username and password from settings
+        username_settings, password_settings = set_from_settings(self)
+
         # Check the username and password
-        if username == 'admin' and password == 'admin':
+        if username == username_settings and password == password_settings:
             # Threads
             self.live_update_thread = LiveUpdateThread()
             self.live_update_thread.cpu_data_changed.connect(self.update_server_cpu_usage)
