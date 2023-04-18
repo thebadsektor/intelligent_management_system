@@ -2,6 +2,7 @@ import json
 import socket
 import time
 from monitor import *
+from utils import *
 
 def connect_to_server(host, port, callback=None):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -17,6 +18,9 @@ def connect_to_server(host, port, callback=None):
 
         while True:
             try:
+                # Set from settings 
+                set_from_settings_to_client()
+
                 cpu_usage = get_cpu_usage()
                 used_memory_usage = get_memory_usage()['used']
                 total_memory_usage = get_memory_usage()['total']
