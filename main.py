@@ -104,8 +104,6 @@ class MainWindow(CustomWindow):
         self.btnActivity.clicked.connect(self.open_activity)
         self.btnSettings.clicked.connect(self.open_settings)
         self.txtServerName.textChanged.connect(self.settings_text_changed)
-        self.txtIdleTime.textChanged.connect(self.settings_text_changed)
-        self.txtCpuUsageIdleThreshold.textChanged.connect(self.settings_text_changed)
         self.btnSave.clicked.connect(self.settings_save)
 
         # Install an event filter on the application to intercept key events
@@ -134,22 +132,22 @@ class MainWindow(CustomWindow):
         self.btnSettings.setIcon(QIcon(':/images/resources/icons_alt/settings.svg'))
         self.btnActivity.setIcon(QIcon(':/images/resources/icons_disabled/activity.svg'))
 
-        # only allow numbers in txtIdleTimes and txtCpuUsageIdleThreshold
-        int_validator = QIntValidator()
-        self.txtIdleTime.setValidator(int_validator)
-        self.txtCpuUsageIdleThreshold.setValidator(int_validator)
+        # # only allow numbers in txtIdleTimes and txtCpuUsageIdleThreshold
+        # int_validator = QIntValidator()
+        # self.txtIdleTime.setValidator(int_validator)
+        # self.txtCpuUsageIdleThreshold.setValidator(int_validator)
 
         # Set settings inputs
         set_settings_inputs(self)
 
         # Check settings inputs
-        self.check_settings_inputs(self.txtServerName.text(), self.txtIdleTime.text(), self.txtCpuUsageIdleThreshold)
+        self.check_settings_inputs(self.txtServerName.text())
 
         self.stackedWidget2.setCurrentIndex(1)
 
-    def check_settings_inputs(self, server_name_text, idle_time_text, cpu_usage_idle_threshold):
+    def check_settings_inputs(self, server_name_text):
         # If no input
-        if not server_name_text or not idle_time_text or not cpu_usage_idle_threshold:
+        if not server_name_text:
             print('disabled')
             self.btnSave.setEnabled(False)
             self.btnSave.setStyleSheet('background: #4E5BBC')
@@ -160,9 +158,7 @@ class MainWindow(CustomWindow):
 
     def settings_text_changed(self):
         server_name_text = self.txtServerName.text().strip()
-        idle_time_text = self.txtIdleTime.text().strip()
-        cpu_usage_idle_threshold = self.txtCpuUsageIdleThreshold.text().strip()
-        self.check_settings_inputs(server_name_text, idle_time_text, cpu_usage_idle_threshold)
+        self.check_settings_inputs(server_name_text)
 
     def settings_save(self):
         # Load the data from the file
@@ -171,8 +167,6 @@ class MainWindow(CustomWindow):
 
         # Update the settings.json values
         data['server_name'] = self.txtServerName.text()
-        data['idle_time'] = int(self.txtIdleTime.text())
-        data['cpu_usage_idle_threshold'] = int(self.txtCpuUsageIdleThreshold.text())
 
         # Write the updated data back to the file
         with open('settings.json', 'w') as f:

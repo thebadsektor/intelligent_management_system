@@ -260,42 +260,15 @@ def set_from_settings(self):
     with open('settings.json') as f:
         data = json.load(f)
         server_name = data['server_name']
-        idle_time = int(data['idle_time'])
-        cpu_usage_idle_threshold = int(data['cpu_usage_idle_threshold'])
 
         # Set server name
         self.PC.setText(f'  {server_name}')
-        # Set id time
-        monitor.IDLE_THRESHOLD = idle_time
-        # Set CPU usage idle threshold
-        monitor.CPU_USAGE_IDLE_THRESHOLD = cpu_usage_idle_threshold
-
-        print(f"Server name: {self.PC.text()} idle time: {monitor.IDLE_THRESHOLD} cpu usage idle threshold: {monitor.CPU_USAGE_IDLE_THRESHOLD}")
-
-def set_from_settings_to_client():
-    with open('settings.json') as f:
-        data = json.load(f)
-        idle_time = int(data['idle_time'])
-        cpu_usage_idle_threshold = int(data['cpu_usage_idle_threshold'])
-
-        # Set id time
-        monitor.IDLE_THRESHOLD = idle_time
-        # Set CPU usage idle threshold
-        monitor.CPU_USAGE_IDLE_THRESHOLD = cpu_usage_idle_threshold
-
-        print(f"idle time: {monitor.IDLE_THRESHOLD} cpu usage idle threshold: {monitor.CPU_USAGE_IDLE_THRESHOLD}")
 
 def set_settings_inputs(self):
     with open('settings.json') as f:
         data = json.load(f)
         server_name = data['server_name']
-        idle_time = str(data['idle_time'])
-        cpu_usage_idle_threshold = str(data['cpu_usage_idle_threshold'])
     
     # Set server name input
     self.txtServerName.setText(server_name)
-    # Set idle time input
-    self.txtIdleTime.setText(idle_time)
-    # Set CPU usage idle threshold
-    self.txtCpuUsageIdleThreshold.setText(cpu_usage_idle_threshold)
 

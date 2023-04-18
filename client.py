@@ -2,7 +2,10 @@ import json
 import socket
 import time
 from monitor import *
-from utils import *
+
+# Set constants
+IDLE_TIME_THRESHOLD = 10
+CPU_USAGE_IDLE_THRESHOLD = 10
 
 def connect_to_server(host, port, callback=None):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -18,9 +21,6 @@ def connect_to_server(host, port, callback=None):
 
         while True:
             try:
-                # Set from settings 
-                set_from_settings_to_client()
-
                 cpu_usage = get_cpu_usage()
                 used_memory_usage = get_memory_usage()['used']
                 total_memory_usage = get_memory_usage()['total']
@@ -34,8 +34,8 @@ def connect_to_server(host, port, callback=None):
                     idle_time = 0
 
                 # If the idle timer exceeds the threshold, shut down the system
-                if idle_time >= IDLE_THRESHOLD:
-                    print(f'idle_time: {idle_time}, idle_threshold: {IDLE_THRESHOLD}')
+                if idle_time >= IDLE_TIME_THRESHOLD:
+                    print(f'idle_time: {idle_time}, idle_threshold: {IDLE_TIME_THRESHOLD}')
                     print("Client will shutdown...")
                     s.sendall(json.dumps({"action": "shutdown"}).encode('utf-8'))
                     choice = input("System has been idle for too long. Do you want to shut it down? [y/n]: ")
