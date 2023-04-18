@@ -127,8 +127,7 @@ class ClientWindow(CustomWindow):
         port = int(self.txtServerPort.text())
         self.connection_thread = ConnectionThread(host, port)
         self.connection_thread.data_received.connect(self.display_received_data)
-        self.connection_thread.start()
-        print('run')
+        self.connection_thread.run()
         
         # Changes in UI
         self.txtTitle.setText('Connected')
@@ -146,7 +145,6 @@ class ClientWindow(CustomWindow):
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread
-            print('terminated')
 
         # Changes in UI
         self.txtTitle.setText('Connect to Server')
