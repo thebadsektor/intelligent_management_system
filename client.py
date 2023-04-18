@@ -11,6 +11,7 @@ def connect_to_server(s, callback=None):
     network_info = get_network_info()
     os_info = get_os_info()
     system_info = {"network_info": network_info, "os_info": os_info}
+    print(system_info)
     s.sendall(json.dumps(system_info).encode('utf-8'))
 
     # Initialize the idle timer
