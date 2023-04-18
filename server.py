@@ -23,22 +23,23 @@ def handle_client(client_socket, addr, signal, client_num):
 
     with client_socket:
         while True:
-            data = json.loads(client_socket.recv(1024).decode('utf-8'))
-            print(data)
+            try:
+                data = json.loads(client_socket.recv(1024).decode('utf-8'))
+                print(data)
 
-            # Check if the action is to shutdown the client
-            if 'action' in data and data['action'] == 'shutdown':
-                print(f"Shutting down client for Client #{client_num}")
+                # Check if the action is to shutdown the client
+                if 'action' in data and data['action'] == 'shutdown':
+                    print(f"Shutting down client for Client #{client_num}")
+                    signal.remove_client.emit(client_num)
+                    break
+
+                signal.cpu_data_changed.emit(client_num, data['cpu_usage'])
+                signal.memory_data_changed.emit(client_num, data['used_memory_usage'], data['total_memory_usage'])
+                signal.disk_data_changed.emit(client_num, data['used_disk_usage'], data['total_disk_usage'])
+            except ConnectionResetError:
+                print(f"Client #{client_num} {addr} disconnected")
                 signal.remove_client.emit(client_num)
                 break
-            
-            signal.cpu_data_changed.emit(client_num, data['cpu_usage'])
-            signal.memory_data_changed.emit(client_num, data['used_memory_usage'], data['total_memory_usage'])
-            signal.disk_data_changed.emit(client_num, data['used_disk_usage'], data['total_disk_usage'])
-            
-        # emit remove_client signal when client socket is closed
-        print("Client is disconnecting")
-        signal.remove_client.emit(client_num)
 
 def start_server(host, port, signal):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

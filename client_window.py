@@ -24,9 +24,17 @@ class ConnectionThread(QThread):
         super().__init__()
         self.host = host
         self.port = port
+        self.socket = None
 
     def run(self):
-        connect_to_server(self.host, self.port, callback=self.update_received_data)
+        self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
+
+    def send_data(self, data):
+        if self.socket:
+            try:
+                self.socket.sendall(data.encode('utf-8'))
+            except Exception as e:
+                self.data_received.emit(str(e))
         
     def update_received_data(self, data):
         self.data_received.emit(data)
@@ -138,8 +146,6 @@ class ClientWindow(CustomWindow):
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread
-
-
 
         # Changes in UI
         self.txtTitle.setText('Connect to Server')
