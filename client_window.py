@@ -78,8 +78,8 @@ class ClientWindow(CustomWindow):
         app = QApplication.instance()
         app.installEventFilter(self)
 
-        # Set from settings
-        set_from_settings(self)
+        # Set from settings 
+        set_from_settings_to_client(self)
 
     # Handle Enter key pressed in connect
     def eventFilter(self, obj, event):

@@ -272,6 +272,19 @@ def set_from_settings(self):
 
         print(f"Server name: {self.PC.text()} idle time: {monitor.IDLE_THRESHOLD} cpu usage idle threshold: {monitor.CPU_USAGE_IDLE_THRESHOLD}")
 
+def set_from_settings_to_client(self):
+    with open('settings.json') as f:
+        data = json.load(f)
+        idle_time = int(data['idle_time'])
+        cpu_usage_idle_threshold = int(data['cpu_usage_idle_threshold'])
+
+        # Set id time
+        monitor.IDLE_THRESHOLD = idle_time
+        # Set CPU usage idle threshold
+        monitor.CPU_USAGE_IDLE_THRESHOLD = cpu_usage_idle_threshold
+
+        print(f"idle time: {monitor.IDLE_THRESHOLD} cpu usage idle threshold: {monitor.CPU_USAGE_IDLE_THRESHOLD}")
+
 def set_settings_inputs(self):
     with open('settings.json') as f:
         data = json.load(f)
