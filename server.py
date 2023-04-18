@@ -55,6 +55,7 @@ def start_server(host, port, signal):
             thread = threading.Thread(target=handle_client, args=(client_socket, addr, signal, client_num))
             thread.start()
             signal.new_client_connected.emit(client_num)
+            print(f'client_num is {client_num}')
             client_num += 1
 
 if __name__ == '__main__':

@@ -58,6 +58,7 @@ def create_new_card(self):
 
     # card number
     card_num = cards_layout.count() + 1
+    print(f'card_num is {card_num}')
 
     # card
     card = QFrame()

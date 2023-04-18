@@ -225,10 +225,11 @@ class MainWindow(CustomWindow):
         btnSeeMore = self.findChild(QPushButton, f'btnSeeMore{client_num}')
         btnSeeLess = self.findChild(QPushButton, f'btnSeeLess{client_num}')
 
-        btnSeeMore.clicked.connect(lambda: self.see_more(client_num))
-        btnSeeLess.clicked.connect(lambda: self.see_less(client_num))
+        if btnSeeMore and btnSeeLess:
+            btnSeeMore.clicked.connect(lambda: self.see_more(client_num))
+            btnSeeLess.clicked.connect(lambda: self.see_less(client_num))
 
-        self.see_less(client_num)
+            self.see_less(client_num)
 
     def remove_card(self, client_num):
         card = self.findChild(QFrame, f'card{client_num}')
