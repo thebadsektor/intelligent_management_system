@@ -290,7 +290,7 @@ def set_settings_inputs(self):
         data = json.load(f)
         server_name = data['server_name']
         idle_time = str(data['idle_time'])
-        cpu_usage_idle_threshold = int(data['cpu_usage_idle_threshold'])
+        cpu_usage_idle_threshold = str(data['cpu_usage_idle_threshold'])
     
     # Set server name input
     self.txtServerName.setText(server_name)

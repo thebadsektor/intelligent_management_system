@@ -24,13 +24,14 @@ def connect_to_server(host, port, callback=None):
                 total_disk_usage = get_disk_usage()['total']
 
                 # Update the idle timer
-                if cpu_usage < CPU_USAGE_IDLE_THRESHOLD:
+                if cpu_usage < CPU_USAGE_IDLE_THRESHOLD:                    
                     idle_time += 1
                 else:
                     idle_time = 0
 
                 # If the idle timer exceeds the threshold, shut down the system
                 if idle_time >= IDLE_THRESHOLD:
+                    print(f'idle_time: {idle_time}, idle_threshold: {IDLE_THRESHOLD}')
                     print("Client will shutdown...")
                     s.sendall(json.dumps({"action": "shutdown"}).encode('utf-8'))
                     choice = input("System has been idle for too long. Do you want to shut it down? [y/n]: ")
