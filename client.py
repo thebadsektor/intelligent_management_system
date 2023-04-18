@@ -35,7 +35,6 @@ def connect_to_server(host, port, callback=None):
 
                 # If the idle timer exceeds the threshold, shut down the system
                 if idle_time >= IDLE_TIME_THRESHOLD:
-                    print(f'idle_time: {idle_time}, idle_threshold: {IDLE_TIME_THRESHOLD}')
                     print("Client will shutdown...")
                     s.sendall(json.dumps({"action": "shutdown"}).encode('utf-8'))
                     choice = input("System has been idle for too long. Do you want to shut it down? [y/n]: ")
@@ -59,10 +58,9 @@ def connect_to_server(host, port, callback=None):
 
                 # Wait every 1 second before sending again
                 time.sleep(1)
-            except (ConnectionResetError, BrokenPipeError):
-                # Handle client disconnect
-                print("Client has disconnected from the server.")
-                break
+            except Exception as e:
+                print(f"Error: {e}")
+
 
 if __name__ == '__main__':
     host = 'YOUR_SERVER_IP_ADDRESS'
