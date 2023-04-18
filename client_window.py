@@ -7,6 +7,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import uic
 import json
 from utils import *
+import socket
 
 # Import resources
 import resources
@@ -130,9 +131,17 @@ class ClientWindow(CustomWindow):
 
     def stop_client(self):
         if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
+            # Send a message to the server to notify that the client is disconnected
+            client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client_socket.connect((self.txtServerIP.text(), self.txtServerPort.text()))
+            client_socket.sendall(b"client_disconnected")
+            client_socket.close()
+            
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread
+
+
 
         # Changes in UI
         self.txtTitle.setText('Connect to Server')

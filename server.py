@@ -26,9 +26,6 @@ def handle_client(client_socket, addr, signal, client_num):
             data = json.loads(client_socket.recv(1024).decode('utf-8'))
             print(data)
 
-            if not data:
-                print('hello')
-
             # Check if the action is to shutdown the client
             if 'action' in data and data['action'] == 'shutdown':
                 print(f"Shutting down client for Client #{client_num}")
@@ -38,7 +35,7 @@ def handle_client(client_socket, addr, signal, client_num):
             signal.cpu_data_changed.emit(client_num, data['cpu_usage'])
             signal.memory_data_changed.emit(client_num, data['used_memory_usage'], data['total_memory_usage'])
             signal.disk_data_changed.emit(client_num, data['used_disk_usage'], data['total_disk_usage'])
-
+            
         # emit remove_client signal when client socket is closed
         print("Client is disconnecting")
         signal.remove_client.emit(client_num)
