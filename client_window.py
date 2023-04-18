@@ -145,6 +145,7 @@ class ClientWindow(CustomWindow):
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread
+            print('terminated')
 
         # Changes in UI
         self.txtTitle.setText('Connect to Server')
