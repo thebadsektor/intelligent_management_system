@@ -52,12 +52,13 @@ def center(self):
     # Move the window to the center of the screen
     self.move(top_left)
 
-def create_new_card(self):
+def create_new_card(self, client_num):
     # cards QGridLayout
     cards_layout = self.cards.layout()
 
     # card number
-    card_num = cards_layout.count() + 1
+    # card_num = cards_layout.count() + 1
+    card_num = client_num
     print(f'card_num is {card_num}')
 
     # card

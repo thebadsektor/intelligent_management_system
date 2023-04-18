@@ -218,18 +218,17 @@ class MainWindow(CustomWindow):
 
     # PC CLIENT/S
     def spawn_cards(self, client_num):
-        create_new_card(self)
+        create_new_card(self, client_num)
 
         self.scrollArea.setMinimumWidth(self.cards.minimumSizeHint().width())
 
         btnSeeMore = self.findChild(QPushButton, f'btnSeeMore{client_num}')
         btnSeeLess = self.findChild(QPushButton, f'btnSeeLess{client_num}')
 
-        if btnSeeMore and btnSeeLess:
-            btnSeeMore.clicked.connect(lambda: self.see_more(client_num))
-            btnSeeLess.clicked.connect(lambda: self.see_less(client_num))
+        btnSeeMore.clicked.connect(lambda: self.see_more(client_num))
+        btnSeeLess.clicked.connect(lambda: self.see_less(client_num))
 
-            self.see_less(client_num)
+        self.see_less(client_num)
 
     def remove_card(self, client_num):
         card = self.findChild(QFrame, f'card{client_num}')
