@@ -25,11 +25,9 @@ class ConnectionThread(QThread):
         self.host = host
         self.port = port
         self.socket = None
-        self.connected = False
 
     def run(self):
         self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
-        self.connected = True
 
     def send_message(self, message):
         while self.socket is None:
