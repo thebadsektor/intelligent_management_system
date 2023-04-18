@@ -128,6 +128,7 @@ class ClientWindow(CustomWindow):
         self.connection_thread = ConnectionThread(host, port)
         self.connection_thread.data_received.connect(self.display_received_data)
         self.connection_thread.start()
+        print('run')
         
         # Changes in UI
         self.txtTitle.setText('Connected')
