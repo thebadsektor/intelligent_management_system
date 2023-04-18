@@ -24,17 +24,9 @@ class ConnectionThread(QThread):
         super().__init__()
         self.host = host
         self.port = port
-        self.socket = None
 
     def run(self):
-        self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
-
-    def send_data(self, data):
-        if self.socket:
-            try:
-                self.socket.sendall(data.encode('utf-8'))
-            except Exception as e:
-                self.data_received.emit(str(e))
+        connect_to_server(self.host, self.port, callback=self.update_received_data)
         
     def update_received_data(self, data):
         self.data_received.emit(data)
@@ -139,9 +131,11 @@ class ClientWindow(CustomWindow):
 
     def stop_client(self):
         if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
-            # Send a message to the server to notify that the client is disconnecting
-            message = {'action': 'shutdown'}
-            self.connection_thread.send_data(json.dumps(message))
+            # Send a connectreseterror to the server to notify that the client is disconnecting
+            try:
+                self.connection_thread.socket.send(json.dumps({'action': 'shutdown'}).encode('utf-8'))
+            except ConnectionResetError:
+                pass
 
             self.connection_thread.terminate()
             self.connection_thread.wait()
