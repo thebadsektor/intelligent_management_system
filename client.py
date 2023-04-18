@@ -7,10 +7,7 @@ from monitor import *
 IDLE_TIME_THRESHOLD = 10
 CPU_USAGE_IDLE_THRESHOLD = 10
 
-def connect_to_server(host, port, callback=None):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((host, port))
-
+def connect_to_server(s, callback=None):
     network_info = get_network_info()
     os_info = get_os_info()
     system_info = {"network_info": network_info, "os_info": os_info}
@@ -57,8 +54,6 @@ def connect_to_server(host, port, callback=None):
 
         # Wait every 1 second before sending again
         time.sleep(1)
-    return s
-
 
 
 if __name__ == '__main__':

@@ -27,7 +27,9 @@ class ConnectionThread(QThread):
         self.socket = None
 
     def run(self):
-        self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.host, self.port))
+        connect_to_server(self.socket, callback=self.update_received_data)
 
     def send_message(self, message):
         if socket is not None:
@@ -125,7 +127,7 @@ class ClientWindow(CustomWindow):
         port = int(self.txtServerPort.text())
         self.connection_thread = ConnectionThread(host, port)
         self.connection_thread.data_received.connect(self.display_received_data)
-        self.connection_thread.run()
+        self.connection_thread.start()
         
         # Changes in UI
         self.txtTitle.setText('Connected')
