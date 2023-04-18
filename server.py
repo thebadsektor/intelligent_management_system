@@ -31,7 +31,6 @@ def handle_client(client_socket, addr, signal, client_num):
                 if 'action' in data and data['action'] == 'shutdown':
                     print(f"Shutting down client for Client #{client_num}")
                     signal.remove_client.emit(client_num)
-                    client_socket.close()
                     break
 
                 signal.cpu_data_changed.emit(client_num, data['cpu_usage'])
@@ -40,7 +39,6 @@ def handle_client(client_socket, addr, signal, client_num):
             except ConnectionResetError:
                 print(f"Client #{client_num} {addr} disconnected")
                 signal.remove_client.emit(client_num)
-                client_socket.close()
                 break
 
 def start_server(host, port, signal):

@@ -28,6 +28,13 @@ class ConnectionThread(QThread):
 
     def run(self):
         self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
+
+    def send_message(self, message):
+        if self.socket is not None:
+            data = json.dumps({'message': message}).encode('utf-8')
+            self.socket.sendall(data)
+        else:
+            print("Socket is not connected.")
         
     def update_received_data(self, data):
         self.data_received.emit(data)
@@ -132,9 +139,7 @@ class ClientWindow(CustomWindow):
 
     def stop_client(self):
         if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
-            # Send a message to the client to trigger a ConnectionResetError
-            self.connection_thread.client_socket.sendall(b'Terminating client')
-
+            self.connection_thread.send_message('Client disconnected')
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread
