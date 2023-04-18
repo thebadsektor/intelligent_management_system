@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5 import uic
 import json
+from utils import *
 
 # Import resources
 import resources
@@ -76,6 +77,9 @@ class ClientWindow(CustomWindow):
         # Install an event filter on the application to intercept key events
         app = QApplication.instance()
         app.installEventFilter(self)
+
+        # Set from settings
+        set_from_settings(self)
 
     # Handle Enter key pressed in connect
     def eventFilter(self, obj, event):

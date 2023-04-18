@@ -125,21 +125,8 @@ class MainWindow(CustomWindow):
         self.btnActivity.setIcon(QIcon(':/images/resources/icons_alt/activity.svg'))
         self.btnSettings.setIcon(QIcon(':/images/resources/icons_disabled/settings.svg'))
 
-        # Read settings.json
-        with open('settings.json') as f:
-            data = json.load(f)
-            server_name = data['server_name']
-            idle_time = int(data['idle_time'])
-            cpu_usage_idle_threshold = int(data['cpu_usage_idle_threshold'])
-
-        # Set server name
-        self.PC.setText(f'  {server_name}')
-        # Set id time
-        monitor.IDLE_THRESHOLD = idle_time
-        # Set CPU usage idle threshold
-        monitor.CPU_USAGE_IDLE_THRESHOLD = cpu_usage_idle_threshold
-
-        print(f"Server name: {self.PC.text()} idle time: {monitor.IDLE_THRESHOLD} cpu usage idle threshold: {monitor.CPU_USAGE_IDLE_THRESHOLD}")
+        # Set from settings.json
+        set_from_settings(self)
 
         self.stackedWidget2.setCurrentIndex(0)
 
@@ -152,19 +139,8 @@ class MainWindow(CustomWindow):
         self.txtIdleTime.setValidator(int_validator)
         self.txtCpuUsageIdleThreshold.setValidator(int_validator)
 
-        # Read settings.json
-        with open('settings.json') as f:
-            data = json.load(f)
-            server_name = data['server_name']
-            idle_time = str(data['idle_time'])
-            cpu_usage_idle_threshold = str(data['cpu_usage_idle_threshold'])
-        
-        # Set server name input
-        self.txtServerName.setText(server_name)
-        # Set idle time input
-        self.txtIdleTime.setText(idle_time)
-        # Set CPU usage idle threshold
-        self.txtCpuUsageIdleThreshold.setText(cpu_usage_idle_threshold)
+        # Set settings inputs
+        set_settings_inputs(self)
 
         # Check settings inputs
         self.check_settings_inputs(self.txtServerName.text(), self.txtIdleTime.text(), self.txtCpuUsageIdleThreshold)
