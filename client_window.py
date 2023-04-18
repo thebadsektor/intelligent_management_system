@@ -141,7 +141,7 @@ class ClientWindow(CustomWindow):
 
     def stop_client(self):
         if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
-            self.connection_thread.send_message('Client disconnected')
+            self.connection_thread.send_message('disconnect')
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread

@@ -27,6 +27,10 @@ def handle_client(client_socket, addr, signal, client_num):
                 data = json.loads(client_socket.recv(1024).decode('utf-8'))
                 print(data)
 
+                if 'message' in data and data['message'] == 'disconnect':
+                    signal.remove_client.emit(client_num)
+                    break
+
                 # Check if the action is to shutdown the client
                 if 'action' in data and data['action'] == 'shutdown':
                     print(f"Shutting down client for Client #{client_num}")
