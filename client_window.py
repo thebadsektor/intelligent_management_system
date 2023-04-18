@@ -132,7 +132,9 @@ class ClientWindow(CustomWindow):
 
     def stop_client(self):
         if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
-            self.connection_thread.socket.close()
+            # Send a message to the client to trigger a ConnectionResetError
+            self.connection_thread.client_socket.sendall(b'Terminating client')
+
             self.connection_thread.terminate()
             self.connection_thread.wait()
             del self.connection_thread
