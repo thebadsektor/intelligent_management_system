@@ -25,12 +25,14 @@ class ConnectionThread(QThread):
         self.host = host
         self.port = port
         self.socket = None
+        self.connected = False
 
     def run(self):
         self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
+        self.connected = True
 
     def send_message(self, message):
-        if self.socket is not None:
+        if self.connected:
             data = json.dumps({'message': message}).encode('utf-8')
             self.socket.sendall(data)
         else:
@@ -139,6 +141,7 @@ class ClientWindow(CustomWindow):
 
     def stop_client(self):
         if hasattr(self, 'connection_thread') and self.connection_thread.isRunning():
+           if self.connection_thread.connected:
             self.connection_thread.send_message('Client disconnected')
             self.connection_thread.terminate()
             self.connection_thread.wait()
