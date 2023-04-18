@@ -54,6 +54,7 @@ def connect_to_server(s, callback=None):
 
         # Wait every 1 second before sending again
         time.sleep(1)
+ 
 
 
 if __name__ == '__main__':
