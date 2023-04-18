@@ -24,9 +24,10 @@ class ConnectionThread(QThread):
         super().__init__()
         self.host = host
         self.port = port
+        self.socket = None
 
     def run(self):
-        connect_to_server(self.host, self.port, callback=self.update_received_data)
+        self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
         
     def update_received_data(self, data):
         self.data_received.emit(data)
