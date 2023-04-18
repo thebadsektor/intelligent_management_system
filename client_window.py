@@ -30,14 +30,11 @@ class ConnectionThread(QThread):
         self.socket = connect_to_server(self.host, self.port, callback=self.update_received_data)
 
     def send_message(self, message):
-        while self.socket is None:
-            time.sleep(0.1)
-        print('Message sent')
-        data = json.dumps({'message': message}).encode('utf-8')
-        self.socket.sendall(data)
-
-        # else:
-        #     print("Socket is not connected.")
+        if socket is not None:
+            data = json.dumps({'message': message}).encode('utf-8')
+            self.socket.sendall(data)
+        else:
+            print("Socket is not connected.")
         
     def update_received_data(self, data):
         self.data_received.emit(data)
@@ -128,7 +125,7 @@ class ClientWindow(CustomWindow):
         port = int(self.txtServerPort.text())
         self.connection_thread = ConnectionThread(host, port)
         self.connection_thread.data_received.connect(self.display_received_data)
-        self.connection_thread.start()
+        self.connection_thread.run()
         
         # Changes in UI
         self.txtTitle.setText('Connected')
